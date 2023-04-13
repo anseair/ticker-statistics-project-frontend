@@ -1,0 +1,33 @@
+/*hero*/
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 850px;
+    background-image: linear-gradient(to bottom, rgb(0 0 0 / 61%), rgb(0 0 0 / 44%)), url(../Images/bg1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.hero__title {
+    font-family: 'Merriweather', serif;
+    position: relative;
+    font-size: 66px;
+    width: 900px;
+    /*text-align: center;*/
+    margin-bottom: 40px;
+
+}
+
+.hero__subtitle {
+    font-family: 'Roboto Condensed', sans-serif;
+    text-transform: uppercase;
+    font-size: 20px;
+    width: 333px;
+    letter-spacing: 1px;
+    padding-bottom: 20px;
+}
+
+
+

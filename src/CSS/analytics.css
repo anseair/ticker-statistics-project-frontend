@@ -1,0 +1,93 @@
+.form__container {
+    margin-bottom: 50px;
+}
+
+.correlationPage__form{
+    background-color: #f2f2f2;
+    border-radius: 2px;
+    border: 1px solid #d6d0d0;
+    display: flex;
+    align-items: center;
+}
+
+.correlationPage__form .input__container:not(:last-child){
+    margin-bottom: 0;
+}
+.correlationPage__form .input__container{
+    padding: 30px 10px 20px;
+}
+
+.correlationPage__form input[type="date"] {
+    width: 100px;
+    padding: 5px;
+    margin-right: 0;
+}
+
+.correlationPage__form input{
+    width: 100px;
+}
+
+.correlationPage__form label{
+    top: 12px;
+    left: 7px;
+}
+
+.correlation__button{
+    padding: 4px 15px;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+
+.analysis h2{
+    color: black;
+    text-align: center;
+}
+.red{
+    color: #c50000;
+}
+
+.correlation__chart {
+    height: 398px;
+    width: 768px;
+    background-image: url("../Images/polozhitelnaya-korrelyatsiya-768x398.png");
+}
+
+label {
+    position: absolute;
+    top: -15px;
+    left: 3px;
+    font-size: 12px;
+    color: #ffffffbf;
+}
+
+/*.input__container {*/
+/*    position: relative;*/
+/*}*/
+
+input {
+    color: white;
+    background-color: #00000021;
+    border: 1px solid #ffffff5e;
+    padding: 12px;
+    border-radius: 2px;
+    text-align: center;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* инвертировать цвет */
+}
+
+input::placeholder {
+    color: #fff;
+}
+
+/*.form__button:hover {*/
+/*    background-color: #7a12127d;*/
+/*    border: 1px solid #7a1212;*/
+/*    color: #ffffff;*/
+/*}*/
+
+/*.form__button {*/
+/*    background-color: #7a1212;*/
+/*    border: 1px solid #7a12127d;*/
+/*}*/

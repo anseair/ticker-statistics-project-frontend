@@ -1,0 +1,139 @@
+/*correlation*/
+.correlation {
+    color: #000;
+    padding: 100px 0;
+}
+
+.correlation__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.correlation__box {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+}
+
+.correlation__chart {
+    height: 398px;
+    width: 768px;
+    background-image: url("../Images/polozhitelnaya-korrelyatsiya-768x398.png");
+}
+
+.correlation__info{
+    width: 300px;
+}
+
+.correlation__title {
+    font-family: 'Merriweather', serif;
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+
+.correlation__subtitle {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #3e4953;
+    font-size: 17px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}
+
+.correlation__text {
+    letter-spacing: 1px;
+    color: #3e4953;
+    width: 60%;
+    margin: 0 auto 50px;
+}
+
+.correlation__form {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 10px;
+    background-color: #eeeeef;
+    color: #000;
+    border-radius: 2px;
+    border: 1px solid #0000002b;
+    box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+    -webkit-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+    -moz-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+}
+
+.correlation__form .symbol {
+    width: 255px;
+}
+
+.correlation__form h4 {
+    font-family: 'Merriweather', serif;
+    font-size: 23px;
+    margin-bottom: 25px;
+}
+
+.date__container {
+    display: flex;
+}
+
+.correlation input {
+    color: #595656;
+    background-color: #ffffff;
+    /* border: 1px solid #000; */
+    padding: 6px;
+    border-radius: 2px;
+    text-align: center;
+    width: 100%;
+}
+
+.correlation input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.correlation input::placeholder {
+    color: #00000085;
+}
+
+.correlation label {
+    position: absolute;
+    top: -15px;
+    left: 3px;
+    font-size: 12px;
+    color: #00000085;
+}
+
+.correlation input[type="date"] {
+    width: 120px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.correlation .input__container:not(:last-child) {
+    margin-right: 0;
+    margin-bottom: 30px;
+}
+
+/*.input__container {*/
+/*    position: relative;*/
+/*}*/
+
+.correlation__form .button {
+    background-color: #7a1212;
+    border: 1px solid #7a1212;
+    padding: 10px 20px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 18px;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+    -webkit-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+    -moz-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+}
+
+.correlation__form button:hover {
+    background-color: #3e4953;
+    border: 1px solid #3e4953;
+}
+
+

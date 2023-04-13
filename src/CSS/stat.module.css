@@ -1,0 +1,53 @@
+.stock__info {
+    color: black;
+    padding: 20px 0 20px 5px;
+    border: 1px solid #b5a8a875;
+    background-color: #f2f2f2;
+    border-radius: 3px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.stock__info p {
+    font-size: 16px;
+}
+
+.stock__name {
+    font-weight: 400;
+    font-size: 17px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.stock__symbol {
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.price__now span {
+    display: inline-block;
+    margin-right: 5px;
+}
+.prise {
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.chg {
+    color: green;
+    font-size: 20px;
+}
+
+.stock {
+    font-weight: 200;
+}
+
+.red {
+    color: #c50000;
+}
+
+.green {
+    color: green;
+}
+
+

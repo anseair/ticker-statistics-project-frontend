@@ -1,0 +1,53 @@
+header {
+    height: 70px;
+}
+
+nav {
+    justify-content: space-evenly;
+    color: #000;
+    background-color: #f9f9f9;
+
+}
+
+.header__container {
+    margin: 0 auto;
+    width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navigation__list {
+    display: flex;
+}
+
+.navigation__list li {
+    color: black;
+    margin: 10px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    transition: color 0.2s ease-in-out;
+}
+
+/*.btn {*/
+/*    --bs-btn-hover-color: rgb(193, 14, 14);*/
+/*    color: black;*/
+/*    border: 0;*/
+/*}*/
+
+a {
+    color: #000;
+}
+
+a:hover {
+    color: rgb(193, 14, 14);
+}
+
+.header__contact {
+    display: flex;
+}
+
+.header__contact li {
+    margin: 10px;
+}
+

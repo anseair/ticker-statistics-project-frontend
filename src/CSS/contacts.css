@@ -1,0 +1,63 @@
+.contacts {
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #000;
+    padding: 100px 0 50px 0;
+    text-align: center;
+}
+
+.contacts__container ul {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.contact__title {
+    font-family: 'Merriweather', serif;
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+
+.contact__subtitle {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #3e4953;
+    font-size: 17px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}
+
+.contact__text {
+    letter-spacing: 1px;
+    color: #3e4953;
+    width: 60%;
+    margin: 0 auto 50px;
+}
+
+.contact__item {
+    width: 250px
+}
+
+.contact__item{
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+    -webkit-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+    -moz-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
+}
+
+.contact__item img{
+    width: 60px;
+    margin-bottom: 20px;
+}
+
+.map{
+    width: 100%;
+    background-image: url("../Images/GoogleMaps.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 200px;
+}

@@ -1,0 +1,97 @@
+.link {
+    text-decoration: none;
+}
+
+.list {
+    list-style: none;
+}
+
+.address {
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+}
+
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+img {
+    display: block;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 1.19;
+    letter-spacing: 0.03em;
+    color: rgb(193, 14, 14);
+    padding-top: 16px;
+    padding-bottom: 16px;
+    width: 258px;
+}
+
+.logo__part--them-light {
+    color: #000;
+}
+
+.page__header {
+    background-color: #595656;
+    background-image: linear-gradient(to top, rgb(0 0 0 / 93%), rgb(0 0 0 / 49%)), url(./Images/bgpage.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.page__container {
+    height: 200px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+/*button*/
+.button {
+    background-color: transparent;
+    border: 1px solid #ffffff;
+    padding: 10px 20px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 18px;
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: #ffffffa1;
+    color: rgb(193, 14, 14);
+}
+
+.form__button:hover {
+    background-color: #7a12127d;
+    border: 1px solid #7a1212;
+    color: #ffffff;
+}
+
+.form__button {
+    background-color: #7a1212;
+    border: 1px solid #7a12127d;
+}
+
+.input__container {
+    position: relative;
+}
+
+

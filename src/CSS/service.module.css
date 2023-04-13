@@ -1,0 +1,70 @@
+/*service*/
+
+.service {
+    display: block;
+}
+.services__list {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+.service__item {
+    height: 200px;
+    width: 32.5%;
+    background-color: #e5e4e4;
+    position: relative;
+}
+
+.service__item_black {
+    background-color: #3e4953;
+}
+
+.service__item_red {
+    background-color: rgb(122 18 18);
+}
+
+.service__item_grey {
+    background-color: #a0a0a0;
+}
+
+.service__content {
+    position: absolute;
+    top: 55px;
+    right: 40px;
+}
+
+.services__title {
+    font-family: 'Merriweather', serif;
+    font-size: 50px;
+}
+
+.services__subtitle {
+    font-family: 'Roboto Condensed', sans-serif;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.service__num {
+    font-size: 179px;
+    font-family: 'Unna', serif;
+    font-weight: 100;
+    line-height: 175px;
+    width: 50%;
+    text-align: end;
+    color: #ffffff73;
+}
+
+.service__item:hover .service__num {
+    width: 70%;
+    color: #ffffff33;
+}
+
+.service__item:hover .service__content {
+    right: 168px;
+}
+
+.service__num, .service__content {
+    transition: 0.5s ease-in-out;
+}
