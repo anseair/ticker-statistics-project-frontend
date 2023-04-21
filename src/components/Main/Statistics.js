@@ -1,8 +1,59 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import '../../CSS/statistics.css'
 import styleStat from '../../CSS/stat.module.css'
+import TickerItem from "./TickerItem";
+import {useDispatch, useSelector} from "react-redux"
+import {fetchTickers} from "../../actions/tickersAction";
+import {fetchLastPrice} from "../../actions/priceAction";
+import {baseUrl} from "../../utils/constants";
+import {putTickers} from "../../slices/tickersSlice";
+import {errorPrice, putPrice} from "../../slices/priceSlice";
+import {logDOM} from "@testing-library/react";
 
 const Statistics = () => {
+    // const {tickers}= useSelector(state => state.tickers);
+    // const {prices} = useSelector(state => state);
+
+    const [price, setPrice] = useState('');
+    const [tickers, setTickers] = useState([]);
+    const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     async function fetchTickers() {
+    //         const response = await fetch(`${baseUrl}/financials/tickers`
+    //             // mode: "no-cors",
+    //             // method: 'GET',
+    //             // credentials: 'same-origin'
+    //         );
+    //         const data = await response.json();
+    //         const ticker1 = data.map(item => item);
+    //         // dispatch(putTickers(data));
+    //         setTickers(ticker1);
+    //     }
+    // }, []);
+
+    const fetchPrice = async() => {
+        const response = await fetch(`${baseUrl}/financials/ticker/AAPL/2023-04-20`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': "*"
+            },
+            mode: 'no-cors'
+        });
+        const data = await response.json();
+        const price1 = data.priceClose;
+        setPrice(price1);
+    }
+
+    useEffect(() => {
+        fetchPrice()
+    }, []);
+
+    // const handleChange = event => {
+    //     console.log(event.target.value);
+    //     setTickers(event.target.value);
+    // };
     return (
         <>
             <section className="page__header">
@@ -16,11 +67,13 @@ const Statistics = () => {
                 <section className="page-statistic__sideBar">
 
                     <div className={styleStat.stock__info}>
-                        <select className="form-select" aria-label="APPL">
-                            <option selected>APPL</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <select className="form-select" name='tickers'>
+                            <option value="" disabled selected hidden>select</option>
+                            {tickers.map((text) =>
+                                // return <option value={text}>{ticker}</option>
+                                // }
+                                <TickerItem key={text} ticker={text}/>
+                            )}
                         </select>
                         <h4 className={styleStat.stock__name}>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</h4>
                         <div className="period">
@@ -49,8 +102,8 @@ const Statistics = () => {
                             </thead>
                             <tbody>
                             <tr>
-                                <th className={styleStat.stock} scope="row">Gold</th>
-                                <td>1985.80</td>
+                                <th className={styleStat.stock} scope="row">AAPL</th>
+                                <td>{price}</td>
                                 <td className={styleStat.green}>+12.30</td>
                                 <td className={styleStat.green}>+0.62%</td>
                             </tr>
