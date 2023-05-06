@@ -7,8 +7,8 @@ export const priceSlice = createSlice({
         pricesFirstTicker: [],
         pricesSecondTicker: [],
 
-        prices: [],
-        beforePrices: [],
+        pricesAllTickers: [],
+        beforePricesAllTickers: [],
     },
     reducers: {
         putPriceMainTicker(state, action) {
@@ -31,42 +31,42 @@ export const priceSlice = createSlice({
         },
 
         putPrice(state, action) {
-            state.prices.push(action.payload.toFixed(2))
+            state.pricesAllTickers.push(action.payload.toFixed(2))
         },
         putBeforePrice(state, action) {
-            state.beforePrices.push(action.payload.toFixed(2))
+            state.beforePricesAllTickers.push(action.payload.toFixed(2))
         },
 
         putPriceAAPL(state, action) {
-            state.prices[0]= action.payload.toFixed(2)
+            state.pricesAllTickers[0]= action.payload.toFixed(2)
         },
         putPriceAMZN(state, action) {
-            state.prices[1]= action.payload.toFixed(2)
+            state.pricesAllTickers[1]= action.payload.toFixed(2)
         },
         putPriceMSFT(state, action) {
-            state.prices[2]= action.payload.toFixed(2)
+            state.pricesAllTickers[2]= action.payload.toFixed(2)
         },
         putPriceTSLA(state, action) {
-            state.prices[3]= action.payload.toFixed(2)
+            state.pricesAllTickers[3]= action.payload.toFixed(2)
         },
         putPriceGSPC(state, action) {
-            state.prices[4]= action.payload.toFixed(2)
+            state.pricesAllTickers[4]= action.payload.toFixed(2)
         },
 
         putBeforePriceAAPL(state, action) {
-            state.beforePrices[0]= action.payload.toFixed(2)
+            state.beforePricesAllTickers[0]= action.payload.toFixed(2)
         },
         putBeforePriceAMZN(state, action) {
-            state.beforePrices[1]= action.payload.toFixed(2)
+            state.beforePricesAllTickers[1]= action.payload.toFixed(2)
         },
         putBeforePriceMSFT(state, action) {
-            state.beforePrices[2]= action.payload.toFixed(2)
+            state.beforePricesAllTickers[2]= action.payload.toFixed(2)
         },
         putBeforePriceTSLA(state, action) {
-            state.beforePrices[3]= action.payload.toFixed(2)
+            state.beforePricesAllTickers[3]= action.payload.toFixed(2)
         },
         putBeforePriceGSPC(state, action) {
-            state.beforePrices[4]= action.payload.toFixed(2)
+            state.beforePricesAllTickers[4]= action.payload.toFixed(2)
         },
         errorPrice(state){
             state = 'Error';

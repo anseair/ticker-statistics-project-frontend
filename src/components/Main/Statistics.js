@@ -4,18 +4,17 @@ import styleStat from '../../CSS/stat.module.css'
 import TickerItem from "./TickerItem";
 import {useDispatch, useSelector} from "react-redux"
 import {fetchTickers} from "../../actions/tickersAction";
-import {
-    fetchPrice, fetchPriceAAPL, fetchPriceAMZN, fetchPriceGSPC,
+import {fetchPriceAAPL, fetchPriceAMZN, fetchPriceGSPC,
     fetchPriceMainTicker, fetchPriceMSFT, fetchPriceTSLA
 } from "../../actions/priceAction";
-import {fetchMaxMinPriceMainTicker} from "../../actions/maxAndMinPriceAction";
+import {fetchMinMaxPriceMainTicker} from "../../actions/minMaxPriceAction";
 import {randomNum} from "../../utils/constants";
 
 
 const Statistics = () => {
     const {tickers} = useSelector(state => state.tickers);
-    const {pricesMainTicker, prices, beforePrices} = useSelector(state => state.prices);
-    const {minMaxPricesMainTicker} = useSelector(state => state.maxMinPrice);
+    const {pricesMainTicker, pricesAllTickers, beforePricesAllTickers} = useSelector(state => state.prices);
+    const {minMaxPricesMainTicker} = useSelector(state => state.minMaxPrice);
     const dispatch = useDispatch();
     const [ticker, setTicker] = useState('');
     const [dateFrom, setDateFrom] = useState('');
@@ -23,7 +22,6 @@ const Statistics = () => {
 
     useEffect(() => {
         dispatch(fetchTickers());
-        // dispatch(fetchPrice(tickers[random]));
         dispatch(fetchPriceAAPL('AAPL'));
         dispatch(fetchPriceAMZN('AMZN'));
         dispatch(fetchPriceMSFT('MSFT'));
@@ -50,7 +48,7 @@ const Statistics = () => {
     const handleChangeMinMax = () => {
         console.log(dateFrom);
         console.log(dateTo);
-        dispatch(fetchMaxMinPriceMainTicker(ticker, dateFrom, dateTo));
+        dispatch(fetchMinMaxPriceMainTicker(ticker, dateFrom, dateTo));
         localStorage.setItem('minMaxPricesMainTicker', minMaxPricesMainTicker);
     }
 
@@ -84,16 +82,29 @@ const Statistics = () => {
                             )}
                         </select>
                         <h4 className={styleStat.stock__name}>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</h4>
-                        <div className="period">
-                            <p className="from">from: <input type={"date"} className="text" onChange={handleChangeDateFrom}></input></p>
-                            <p className="to">to: <input type={"date"} className='text' onChange={handleChangeDateTo}></input></p>
-                        </div>
-
-                        <button type="submit" className="button form__button" id="statsBtn" onClick={handleChangeMinMax}>VIEW STATISTIC</button>
                         <div className={styleStat.price__now}>
                             <span className={styleStat.prise}>{pricesMainTicker[0]}</span>
-                            <span className={styleStat.chg}>{(pricesMainTicker[0]-pricesMainTicker[1]).toFixed(2)}</span>
-                            <span className={styleStat.chg}>({((pricesMainTicker[0]-pricesMainTicker[1])/pricesMainTicker[0]*100).toFixed(2)})%</span>
+                            <span className={(pricesMainTicker[0]-pricesMainTicker[1]).toFixed(2) < 0 ? styleStat.chgRed : styleStat.chgGreen}>{(pricesMainTicker[0]-pricesMainTicker[1]).toFixed(2)}</span>
+                            <span className={((pricesMainTicker[0]-pricesMainTicker[1])/pricesMainTicker[0]*100).toFixed(2) < 0 ? styleStat.chgRed : styleStat.chgGreen}>({((pricesMainTicker[0]-pricesMainTicker[1])/pricesMainTicker[0]*100).toFixed(2)})%</span>
+                        </div>
+                        <div className="period">
+                            <div className="date__container">
+                                <div className="input__container">
+                                    <label htmlFor="dateFrom1">From</label>
+                                    <input type="date" id="dateFrom1" className="text"
+                                        onChange={handleChangeDateFrom}/>
+                                </div>
+                                <div className="input__container">
+                                    <label htmlFor="dateTo1">To</label>
+                                    <input type="date" id="dateTo1" className="text"
+                                        onChange={handleChangeDateTo}/>
+                                </div>
+                            </div>
+                        {/*<div className="period">*/}
+                        {/*    <p className="from">from: <input type={"date"} className="text" onChange={handleChangeDateFrom}></input></p>*/}
+                        {/*    <p className="to">to: <input type={"date"} className='text' onChange={handleChangeDateTo}></input></p>*/}
+                            <button type="submit" className="button form__button" id="statsBtn"
+                                    onClick={handleChangeMinMax}>VIEW STATISTIC</button>
                         </div>
                         <p className="min_prise">Min.price: {minMaxPricesMainTicker[0]}</p>
                         <p className="min_prise">Max.price: {minMaxPricesMainTicker[1]}</p>
@@ -112,33 +123,33 @@ const Statistics = () => {
                             <tbody>
                             <tr>
                                 <th className={styleStat.stock} scope="row">AAPL</th>
-                                <td>{prices[0]}</td>
-                                <td className={styleStat.red}>{(prices[0]-beforePrices[0]).toFixed(2)}</td>
-                                <td className={styleStat.red}>{((prices[0]-beforePrices[0])/prices[0]*100).toFixed(2)}%</td>
+                                <td>{pricesAllTickers[0]}</td>
+                                <td className={(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2)}</td>
+                                <td className={(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[0]-beforePricesAllTickers[0])/pricesAllTickers[0]*100).toFixed(2)}%</td>
                             </tr>
                             <tr>
                                 <th className={styleStat.stock} scope="row">AMZN</th>
-                                <td>{prices[1]}</td>
-                                <td className={styleStat.green}>{(prices[1]-beforePrices[1]).toFixed(2)}</td>
-                                <td className={styleStat.green}>{((prices[1]-beforePrices[1])/prices[1]*100).toFixed(2)}%</td>
+                                <td>{pricesAllTickers[1]}</td>
+                                <td className={(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2)}</td>
+                                <td className={(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[1]-beforePricesAllTickers[1])/pricesAllTickers[1]*100).toFixed(2)}%</td>
                             </tr>
                             <tr>
                                 <th className={styleStat.stock} scope="row">MSFT</th>
-                                <td>{prices[2]}</td>
-                                <td className={styleStat.green}>{(prices[2]-beforePrices[2]).toFixed(2)}</td>
-                                <td className={styleStat.green}>{((prices[2]-beforePrices[2])/prices[2]*100).toFixed(2)}%</td>
+                                <td>{pricesAllTickers[2]}</td>
+                                <td className={(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2)}</td>
+                                <td className={(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[2]-beforePricesAllTickers[2])/pricesAllTickers[2]*100).toFixed(2)}%</td>
                             </tr>
                             <tr>
                                 <th className={styleStat.stock} scope="row">TSLA</th>
-                                <td>{prices[3]}</td>
-                                <td className={styleStat.red}>{(prices[3]-beforePrices[3]).toFixed(2)}</td>
-                                <td className={styleStat.red}>{((prices[3]-beforePrices[3])/prices[3]*100).toFixed(2)}%</td>
+                                <td>{pricesAllTickers[3]}</td>
+                                <td className={(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2)}</td>
+                                <td className={(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[3]-beforePricesAllTickers[3])/pricesAllTickers[3]*100).toFixed(2)}%</td>
                             </tr>
                             <tr>
                                 <th className={styleStat.stock} scope="row">^GSPC</th>
-                                <td>{prices[4]}</td>
-                                <td className={styleStat.green}>{(prices[4]-beforePrices[4]).toFixed(2)}</td>
-                                <td className={styleStat.green}>{((prices[4]-beforePrices[4])/prices[4]*100).toFixed(2)}%</td>
+                                <td>{pricesAllTickers[4]}</td>
+                                <td className={(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2)}</td>
+                                <td className={(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[4]-beforePricesAllTickers[4])/pricesAllTickers[4]*100).toFixed(2)}%</td>
                             </tr>
                             </tbody>
                         </table>

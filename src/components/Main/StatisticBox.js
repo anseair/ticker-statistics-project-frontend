@@ -5,7 +5,7 @@ import {fetchPriceAAPL, fetchPriceAMZN, fetchPriceGSPC, fetchPriceMSFT, fetchPri
 import {useDispatch, useSelector} from "react-redux";
 
 const StatisticBox = () => {
-    const {prices, beforePrices} = useSelector(state => state.prices);
+    const {pricesAllTickers, beforePricesAllTickers} = useSelector(state => state.prices);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -28,52 +28,40 @@ const StatisticBox = () => {
                     <tr>
                         <th className={styleStat.stock} scope="col">Stocks</th>
                         <th className={styleStat.stock} scope="col">Last</th>
-                        <th className={styleStat.stock} scope="col">Chg</th>
-                        <th className={styleStat.stock} scope="col">Chg%</th>
+                        <th className={styleStat.stock} scope="col">Change</th>
+                        <th className={styleStat.stock} scope="col">% Change</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <th className={styleStat.stock} scope="row">AAPL</th>
-                        <td>{prices[0]}</td>
-                        <td className={styleStat.green}>{prices[0]-beforePrices[0]}</td>
-                        <td className={styleStat.green}>>{(prices[0]-beforePrices[0])/prices[0]*100}</td>
+                        <td>{pricesAllTickers[0]}</td>
+                        <td className={(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2)}</td>
+                        <td className={(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[0]-beforePricesAllTickers[0])/pricesAllTickers[0]*100).toFixed(2)}%</td>
                     </tr>
                     <tr>
                         <th className={styleStat.stock} scope="row">AMZN</th>
-                        <td>{prices[1]}</td>
-                        <td className={styleStat.red}>{prices[1]-beforePrices[1]}</td>
-                        <td className={styleStat.red}>>{(prices[1]-beforePrices[1])/prices[1]*100}</td>
-                    </tr>
-                    <tr>
-                        <th className={styleStat.stock} scope="row">GOOG</th>
-                        <td>{prices[2]}</td>
-                        <td className={styleStat.red}>{prices[2]-beforePrices[2]}</td>
-                        <td className={styleStat.red}>>{(prices[2]-beforePrices[2])/prices[2]*100}</td>
-                    </tr>
-                    <tr>
-                        <th className={styleStat.stock} scope="row">INTC</th>
-                        <td>{prices[3]}</td>
-                        <td className={styleStat.red}>{prices[3]-beforePrices[3]}</td>
-                        <td className={styleStat.red}>>{(prices[3]-beforePrices[3])/prices[3]*100}</td>
+                        <td>{pricesAllTickers[1]}</td>
+                        <td className={(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2)}</td>
+                        <td className={(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[1]-beforePricesAllTickers[1])/pricesAllTickers[1]*100).toFixed(2)}%</td>
                     </tr>
                     <tr>
                         <th className={styleStat.stock} scope="row">MSFT</th>
-                        <td>{prices[4]}</td>
-                        <td className={styleStat.green}>{prices[4]-beforePrices[4]}</td>
-                        <td className={styleStat.green}>>{(prices[4]-beforePrices[4])/prices[4]*100}</td>
+                        <td>{pricesAllTickers[2]}</td>
+                        <td className={(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2)}</td>
+                        <td className={(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[2]-beforePricesAllTickers[2])/pricesAllTickers[2]*100).toFixed(2)}%</td>
                     </tr>
                     <tr>
                         <th className={styleStat.stock} scope="row">TSLA</th>
-                        <td>{prices[5]}</td>
-                        <td className={styleStat.green}>{prices[5]-beforePrices[5]}</td>
-                        <td className={styleStat.green}>>{(prices[5]-beforePrices[5])/prices[5]*100}</td>
+                        <td>{pricesAllTickers[3]}</td>
+                        <td className={(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2)}</td>
+                        <td className={(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[3]-beforePricesAllTickers[3])/pricesAllTickers[3]*100).toFixed(2)}%</td>
                     </tr>
                     <tr>
                         <th className={styleStat.stock} scope="row">^GSPC</th>
-                        <td>{prices[6]}</td>
-                        <td className={styleStat.green}>{prices[6]-beforePrices[6]}</td>
-                        <td className={styleStat.green}>>{(prices[6]-beforePrices[6])/prices[6]*100}</td>
+                        <td>{pricesAllTickers[4]}</td>
+                        <td className={(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2)}</td>
+                        <td className={(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[4]-beforePricesAllTickers[4])/pricesAllTickers[4]*100).toFixed(2)}%</td>
                     </tr>
                     </tbody>
                 </table>

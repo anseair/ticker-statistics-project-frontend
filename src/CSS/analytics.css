@@ -1,5 +1,5 @@
 .form__container {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .correlationPage__form{
@@ -15,24 +15,27 @@
     margin-bottom: 0;
 }
 .correlationPage__form .input__container{
-    padding: 30px 10px 20px;
+    padding: 10px 10px;
+    margin: 10px 0px;
 }
 
 .correlationPage__form input[type="date"] {
     width: 150px;
     padding: 5px;
-    margin-right: 0;
+    margin-right: 10px;
 }
 
-.correlationPage__form input{
-    width: 100px;
-}
+/*.correlationPage__form input{*/
+/*    width: 100px;*/
+/*}*/
 
-.correlationPage__form label{
-    top: 12px;
-    left: 7px;
+.correlationPage__form label {
+    position: absolute;
+    top: -7px;
+    left: 12px;
+    font-size: 12px;
+    color: #00000085
 }
-
 .correlation__button{
     padding: 4px 15px;
     border-radius: 3px;
@@ -53,13 +56,7 @@
     background-image: url("../Images/polozhitelnaya-korrelyatsiya-768x398.png");
 }
 
-label {
-    position: absolute;
-    top: -15px;
-    left: 3px;
-    font-size: 12px;
-    color: #ffffffbf;
-}
+
 
 /*.input__container {*/
 /*    position: relative;*/
@@ -92,3 +89,8 @@ input::placeholder {
 /*    background-color: #7a1212;*/
 /*    border: 1px solid #7a12127d;*/
 /*}*/
+
+.page-analytics__sideBar{
+    height: 700px;
+    width: 358px;
+}

@@ -1,18 +1,15 @@
 import {baseUrl, baseUrl8080} from "../utils/constants";
 import {
-    errorMaxMinPrice,
-    putMaxPriceFirstTicker,
-    putMaxPriceMainTicker,
-    putMaxPriceSecondTicker,
+    errorMinMaxPrice, putMaxPriceFirstTicker,
+    putMaxPriceMainTicker, putMaxPriceSecondTicker,
     putMinPriceFirstTicker,
-    putMinPriceMainTicker, putMinPriceSecondTicker,
-} from "../slices/maxAndMinPriceSlice";
-import {errorPrice, putBeforePriceAMZN, putPriceAMZN} from "../slices/priceSlice";
+    putMinPriceMainTicker, putMinPriceSecondTicker
+} from "../slices/minMaxPriceSlice";
 
-export const fetchMaxMinPriceMainTicker = (ticker, dateFrom, dateTo) => {
+export const fetchMinMaxPriceMainTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/max` , {
+            fetch(`${baseUrl}/financials/min` , {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -27,7 +24,7 @@ export const fetchMaxMinPriceMainTicker = (ticker, dateFrom, dateTo) => {
                     'Content-Type': "application/json",
                 }
             }),
-            fetch(`${baseUrl}/financials/min`, {
+            fetch(`${baseUrl}/financials/max`, {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -50,16 +47,16 @@ export const fetchMaxMinPriceMainTicker = (ticker, dateFrom, dateTo) => {
                 Promise.all([data1.priceClose, data2.priceClose])
             )
             .then(([price1, price2]) =>
-                Promise.all([dispatch(putMaxPriceMainTicker(price1)), dispatch(putMinPriceMainTicker(price2))])
+                Promise.all([dispatch(putMinPriceMainTicker(price1)), dispatch(putMaxPriceMainTicker(price2))])
             )
-            .catch(e => dispatch(errorPrice()))
+            .catch(e => dispatch(errorMinMaxPrice()))
     }
 }
 
-export const fetchMaxMinPriceFirstTicker = (ticker, dateFrom, dateTo) => {
+export const fetchMinMaxPriceFirstTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/max` , {
+            fetch(`${baseUrl}/financials/min` , {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -74,7 +71,7 @@ export const fetchMaxMinPriceFirstTicker = (ticker, dateFrom, dateTo) => {
                     'Content-Type': "application/json",
                 }
             }),
-            fetch(`${baseUrl}/financials/min`, {
+            fetch(`${baseUrl}/financials/max`, {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -97,16 +94,16 @@ export const fetchMaxMinPriceFirstTicker = (ticker, dateFrom, dateTo) => {
                 Promise.all([data1.priceClose, data2.priceClose])
             )
             .then(([price1, price2]) =>
-                Promise.all([dispatch(putMaxPriceFirstTicker(price1)), dispatch(putMinPriceFirstTicker(price2))])
+                Promise.all([dispatch(putMinPriceFirstTicker(price1)), dispatch(putMaxPriceFirstTicker(price2))])
             )
-            .catch(e => dispatch(errorPrice()))
+            .catch(e => dispatch(errorMinMaxPrice()))
     }
 }
 
-export const fetchMaxMinPriceSecondTicker = (ticker, dateFrom, dateTo) => {
+export const fetchMinMaxPriceSecondTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/max` , {
+            fetch(`${baseUrl}/financials/min` , {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -121,7 +118,7 @@ export const fetchMaxMinPriceSecondTicker = (ticker, dateFrom, dateTo) => {
                     'Content-Type': "application/json",
                 }
             }),
-            fetch(`${baseUrl}/financials/min`, {
+            fetch(`${baseUrl}/financials/max`, {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -144,8 +141,8 @@ export const fetchMaxMinPriceSecondTicker = (ticker, dateFrom, dateTo) => {
                 Promise.all([data1.priceClose, data2.priceClose])
             )
             .then(([price1, price2]) =>
-                Promise.all([dispatch(putMaxPriceSecondTicker(price1)), dispatch(putMinPriceSecondTicker(price2))])
+                Promise.all([dispatch(putMinPriceSecondTicker(price1)), dispatch(putMaxPriceSecondTicker(price2))])
             )
-            .catch(e => dispatch(errorPrice()))
+            .catch(e => dispatch(errorMinMaxPrice()))
     }
 }

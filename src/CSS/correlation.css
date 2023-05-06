@@ -23,7 +23,8 @@
 }
 
 .correlation__info{
-    width: 300px;
+    margin: 0px 10px;
+    /*width: 400px;*/
 }
 
 .correlation__title {
