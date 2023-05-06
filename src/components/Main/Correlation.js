@@ -3,7 +3,7 @@ import CorrelationBox from "./CorrelationBox";
 
 const Correlation = () => {
     return (
-        <section className="correlation">
+        <section className="correlation" id="correlation">
             <div className="correlation__container">
                 <h5 className="correlation__subtitle">Analyze the Relationship Between Two Stocks</h5>
                 <h3 className="correlation__title">Assessing the Dependence of Two Stocks</h3>

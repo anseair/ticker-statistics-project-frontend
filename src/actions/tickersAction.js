@@ -1,4 +1,4 @@
-import {baseUrl} from "../utils/constants";
+import {baseUrl, baseUrl8080, password, username} from "../utils/constants";
 import {putTickers} from "../slices/tickersSlice";
 
 export const fetchTickers = () => {

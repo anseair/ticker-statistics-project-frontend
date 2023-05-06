@@ -2,9 +2,9 @@ import React from 'react';
 import img from '../../Images/digital-marketing-1725340.jpg'
 import style from '../../CSS/api.module.css'
 
-const Api = () => {
+const StockApi = () => {
     return (
-        <section className={style.api}>
+        <section className={style.api} id="stockApi">
             <div className={style.api_image}><img src={img} alt="town"/></div>
             <div className={style.api__content}>
                 <h5 className={`${style.api__subtitle}`}>Latest Stock Market Information</h5>
@@ -32,4 +32,4 @@ const Api = () => {
     );
 };
 
-export default Api;
+export default StockApi;

@@ -1,17 +1,30 @@
 import {createSlice} from "@reduxjs/toolkit";
 
 export const maxAndMinPriceSlice = createSlice({
-    name: 'maxAndMinPrice',
+    name: 'maxMinPrice',
     initialState: {
-        maxPrice: '',
-        minPrice: ''
+        minMaxPricesMainTicker: [],
+        maxPrice: [],
+        minPrice: []
     },
     reducers: {
-        putMaxPrice(state, action) {
-            state.maxPrice = action.payload
+        putMaxPriceMainTicker(state, action) {
+            state.minMaxPricesMainTicker[0] = action.payload.toFixed(2)
         },
-        putMinPrice(state, action) {
-            state.minPrice = action.payload
+        putMinPriceMainTicker(state, action) {
+            state.minMaxPricesMainTicker[1] = action.payload.toFixed(2)
+        },
+        putMaxPriceFirstTicker(state, action) {
+            state.maxPrice[0] = action.payload.toFixed(2)
+        },
+        putMinPriceFirstTicker(state, action) {
+            state.minPrice[0] = action.payload.toFixed(2)
+        },
+        putMaxPriceSecondTicker(state, action) {
+            state.maxPrice[1] = action.payload.toFixed(2)
+        },
+        putMinPriceSecondTicker(state, action) {
+            state.minPrice[1] = action.payload.toFixed(2)
         },
         errorMaxMinPrice(state){
             state = 'Error'
@@ -19,6 +32,6 @@ export const maxAndMinPriceSlice = createSlice({
     }
 })
 
-export  const {errorMaxMinPrice, putMaxPrice, putMinPrice} = maxAndMinPriceSlice.actions;
+export  const {errorMaxMinPrice, putMaxPriceMainTicker, putMinPriceMainTicker, putMaxPriceFirstTicker, putMinPriceFirstTicker, putMaxPriceSecondTicker, putMinPriceSecondTicker} = maxAndMinPriceSlice.actions;
 
 export  default maxAndMinPriceSlice.reducer;

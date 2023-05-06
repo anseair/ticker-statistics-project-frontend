@@ -68,3 +68,12 @@
 .service__num, .service__content {
     transition: 0.5s ease-in-out;
 }
+
+.services__list a {
+    text-decoration: none;
+    color: white;
+}
+
+.services__list a:hover {
+    color: white;
+}
