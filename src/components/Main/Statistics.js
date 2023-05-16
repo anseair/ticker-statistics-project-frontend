@@ -9,16 +9,25 @@ import {fetchPriceAAPL, fetchPriceAMZN, fetchPriceGSPC,
 } from "../../actions/priceAction";
 import {fetchMinMaxPriceMainTicker} from "../../actions/minMaxPriceAction";
 import {randomNum} from "../../utils/constants";
+import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
+import {fetchAllPrices} from "../../actions/allPricesAction";
 
 
 const Statistics = () => {
     const {tickers} = useSelector(state => state.tickers);
     const {pricesMainTicker, pricesAllTickers, beforePricesAllTickers} = useSelector(state => state.prices);
     const {minMaxPricesMainTicker} = useSelector(state => state.minMaxPrice);
+    const data = useSelector(state => state.allPrices);
     const dispatch = useDispatch();
     const [ticker, setTicker] = useState('');
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
+
+    const [dateNow, setDateNow] = useState('');
+    const [dateFromMonth, setDateFromMonth] = useState('');
+    const [dateFromSixMonth, setDateFromSixMonth] = useState('');
+    const [dateFromYear, setDateFromYear] = useState('');
+
 
     useEffect(() => {
         dispatch(fetchTickers());
@@ -45,11 +54,110 @@ const Statistics = () => {
         setDateTo(e.target.value);
     }
 
-    const handleChangeMinMax = () => {
+    const handleClickMinMax = () => {
         console.log(dateFrom);
         console.log(dateTo);
         dispatch(fetchMinMaxPriceMainTicker(ticker, dateFrom, dateTo));
         localStorage.setItem('minMaxPricesMainTicker', minMaxPricesMainTicker);
+    }
+
+    const handleClickMonth = () => {
+        const count = 1000*60*60*24*30;
+        const current = new Date();
+        let year = current.getFullYear();
+        let day = '' + current.getDate();
+        let month = '' + (current.getMonth()+1);
+        if (day.length < 2 ){
+            day = '0' + day;
+        }
+        if (month.length < 2){
+            month = '0' + month;
+        }
+        console.log(current.toLocaleString())
+        setDateNow(`${year}-${month}-${day}`);
+        console.log(dateNow);
+
+        const current2 = new Date(current.setTime(current.getTime()-count));
+        console.log(current2.toLocaleString());
+        let month2 = '' + (current2.getMonth()+1);
+        let day2 = '' + current2.getDate();
+        let year2 = current2.getFullYear();
+        if (month2.length < 2){
+            month2 = '0' + month2;
+        }
+        if (day2.length < 2){
+            day2 = '0' + day2;
+        }
+        setDateFromMonth(`${year2}-${month2}-${day2}`);
+        console.log(dateFromMonth);
+
+        dispatch(fetchAllPrices(ticker, dateFromMonth, dateNow));
+    }
+
+    const handleClickSixMonth = () => {
+        const count = 1000*60*60*24*180;
+        const current = new Date();
+        let year = current.getFullYear();
+        let day = '' + current.getDate();
+        let month = '' + (current.getMonth()+1);
+        if (day.length < 2 ){
+            day = '0' + day;
+        }
+        if (month.length < 2){
+            month = '0' + month;
+        }
+        console.log(current.toLocaleString())
+        setDateNow(`${year}-${month}-${day}`);
+        console.log(dateNow);
+
+        const current2 = new Date(current.setTime(current.getTime()-count));
+        console.log(current2.toLocaleString());
+        let month2 = '' + (current2.getMonth()+1);
+        let day2 = '' + current2.getDate();
+        let year2 = current2.getFullYear();
+        if (month2.length < 2){
+            month2 = '0' + month2;
+        }
+        if (day2.length < 2){
+            day2 = '0' + day2;
+        }
+        setDateFromSixMonth(`${year2}-${month2}-${day2}`);
+        console.log(dateFromSixMonth);
+
+        dispatch(fetchAllPrices(ticker, dateFromSixMonth, dateNow));
+    }
+
+    const handleClickYear = () => {
+        const count = 1000*60*60*24*365;
+        const current = new Date();
+        let year = current.getFullYear();
+        let day = '' + current.getDate();
+        let month = '' + (current.getMonth()+1);
+        if (day.length < 2 ){
+            day = '0' + day;
+        }
+        if (month.length < 2){
+            month = '0' + month;
+        }
+        console.log(current.toLocaleString())
+        setDateNow(`${year}-${month}-${day}`);
+        console.log(dateNow);
+
+        const current2 = new Date(current.setTime(current.getTime()-count));
+        console.log(current2.toLocaleString());
+        let month2 = '' + (current2.getMonth()+1);
+        let day2 = '' + current2.getDate();
+        let year2 = current2.getFullYear();
+        if (month2.length < 2){
+            month2 = '0' + month2;
+        }
+        if (day2.length < 2){
+            day2 = '0' + day2;
+        }
+        setDateFromYear(`${year2}-${month2}-${day2}`);
+        console.log(dateFromYear);
+
+        dispatch(fetchAllPrices(ticker, dateFromYear, dateNow));
     }
 
     useEffect(() => {
@@ -60,6 +168,20 @@ const Statistics = () => {
         }
     },[])
 
+    const data2 = {
+        dates: ['25 febr', '1 april', '5 april', '10 april', '15 april', '20 april'],
+        prices: [400, 300, 300, 200, 280, 150]
+    };
+
+    const data3 = [
+        { date: '25 febr', price: 400},
+        { date: '1 april', price: 300},
+        { date: '5 april', price: 200},
+        { date: '10 april', price: 200},
+        { date: '15 april', price: 280},
+        { date: '20 april', price: 150}
+    ];
+
     return (
         <>
             <section className="page__header">
@@ -68,7 +190,22 @@ const Statistics = () => {
             </section>
             <section className="page-statistic">
                 <section className="page-statistic__main">
-
+                    <button type="submit" className="button form__button correlation__button me-1"
+                            id="statsBtn" onClick={handleClickMonth}>1MONTH
+                    </button>
+                    <button type="submit" className="button form__button correlation__button me-1"
+                            id="statsBtn" onClick={handleClickSixMonth}>6MONTH
+                    </button>
+                    <button type="submit" className="button form__button correlation__button me-1"
+                            id="statsBtn" onClick={handleClickYear}>1YEAR
+                    </button>
+                    <LineChart width={800} height={300} data={data} margin={ {top: 50, right: 20, bottom: 5, left: 20} }>
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="date" width={3}/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Line type="monotone" dataKey="price" stroke="red" dot={false} />
+                    </LineChart>
                 </section>
                 <section className="page-statistic__sideBar">
 
@@ -104,7 +241,7 @@ const Statistics = () => {
                         {/*    <p className="from">from: <input type={"date"} className="text" onChange={handleChangeDateFrom}></input></p>*/}
                         {/*    <p className="to">to: <input type={"date"} className='text' onChange={handleChangeDateTo}></input></p>*/}
                             <button type="submit" className="button form__button" id="statsBtn"
-                                    onClick={handleChangeMinMax}>VIEW STATISTIC</button>
+                                    onClick={handleClickMinMax}>VIEW STATISTIC</button>
                         </div>
                         <p className="min_prise">Min.price: {minMaxPricesMainTicker[0]}</p>
                         <p className="min_prise">Max.price: {minMaxPricesMainTicker[1]}</p>

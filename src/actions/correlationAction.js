@@ -1,9 +1,9 @@
-import {baseUrl} from "../utils/constants";
+import {baseUrl, baseUrl8080} from "../utils/constants";
 import {putCorrelation} from "../slices/correlationSlice";
 
 export const fetchCorrelation = (firstTicker, secondTicker, dateFrom, dateTo) => {
     return async(dispatch) => {
-        const response = await fetch (`${baseUrl}/financials/correlation`, {
+        const response = await fetch (`${baseUrl8080}/financials/correlation`, {
             method: 'POST',
             body: JSON.stringify({
                 names: [firstTicker, secondTicker],

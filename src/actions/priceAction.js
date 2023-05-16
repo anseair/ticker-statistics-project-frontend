@@ -24,8 +24,8 @@ import {
 export const fetchPriceMainTicker = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`),
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])
@@ -43,8 +43,8 @@ export const fetchPriceMainTicker = (ticker) => {
 export const fetchPriceFirstTicker = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`),
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])
@@ -61,8 +61,8 @@ export const fetchPriceFirstTicker = (ticker) => {
 export const fetchPriceSecondTicker = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`),
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])
@@ -80,8 +80,8 @@ export const fetchPriceSecondTicker = (ticker) => {
 export const fetchPrice = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`)
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`)
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])
@@ -98,8 +98,8 @@ export const fetchPrice = (ticker) => {
 export const fetchPriceAAPL = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`),
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])
@@ -116,8 +116,8 @@ export const fetchPriceAAPL = (ticker) => {
 export const fetchPriceAMZN = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`),
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])
@@ -134,8 +134,8 @@ export const fetchPriceAMZN = (ticker) => {
 export const fetchPriceMSFT = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`),
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])
@@ -153,8 +153,8 @@ export const fetchPriceMSFT = (ticker) => {
 export const fetchPriceTSLA = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`),
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])
@@ -171,8 +171,8 @@ export const fetchPriceTSLA = (ticker) => {
 export const fetchPriceGSPC = (ticker) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-20`),
-            fetch(`${baseUrl}/financials/ticker/${ticker}/2023-04-19`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-20`),
+            fetch(`${baseUrl8080}/financials/ticker/${ticker}/2023-04-19`),
         ])
             .then(([response1, response2]) =>
                 Promise.all([response1.json(), response2.json()])

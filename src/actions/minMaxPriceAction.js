@@ -9,7 +9,7 @@ import {
 export const fetchMinMaxPriceMainTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/min` , {
+            fetch(`${baseUrl8080}/financials/min` , {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -24,7 +24,7 @@ export const fetchMinMaxPriceMainTicker = (ticker, dateFrom, dateTo) => {
                     'Content-Type': "application/json",
                 }
             }),
-            fetch(`${baseUrl}/financials/max`, {
+            fetch(`${baseUrl8080}/financials/max`, {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -56,7 +56,7 @@ export const fetchMinMaxPriceMainTicker = (ticker, dateFrom, dateTo) => {
 export const fetchMinMaxPriceFirstTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/min` , {
+            fetch(`${baseUrl8080}/financials/min` , {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -71,7 +71,7 @@ export const fetchMinMaxPriceFirstTicker = (ticker, dateFrom, dateTo) => {
                     'Content-Type': "application/json",
                 }
             }),
-            fetch(`${baseUrl}/financials/max`, {
+            fetch(`${baseUrl8080}/financials/max`, {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -103,7 +103,7 @@ export const fetchMinMaxPriceFirstTicker = (ticker, dateFrom, dateTo) => {
 export const fetchMinMaxPriceSecondTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
         Promise.all([
-            fetch(`${baseUrl}/financials/min` , {
+            fetch(`${baseUrl8080}/financials/min` , {
                 method: 'Post',
                 body: JSON.stringify(
                     {
@@ -118,7 +118,7 @@ export const fetchMinMaxPriceSecondTicker = (ticker, dateFrom, dateTo) => {
                     'Content-Type': "application/json",
                 }
             }),
-            fetch(`${baseUrl}/financials/max`, {
+            fetch(`${baseUrl8080}/financials/max`, {
                 method: 'Post',
                 body: JSON.stringify(
                     {

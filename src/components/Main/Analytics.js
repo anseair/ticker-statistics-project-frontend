@@ -65,6 +65,7 @@ const Analytics = () => {
         console.log(dateTo);
         dispatch(fetchMinMaxPriceFirstTicker(firstTicker, dateFrom, dateTo));
         dispatch(fetchMinMaxPriceSecondTicker(secondTicker, dateFrom, dateTo));
+
         localStorage.setItem('minMaxPriceFirstTicker', minMaxPriceFirstTicker);
         localStorage.setItem('minMaxPriceSecondTicker',minMaxPriceSecondTicker);
         dispatch(fetchCorrelation(firstTicker, secondTicker, dateFrom, dateTo));

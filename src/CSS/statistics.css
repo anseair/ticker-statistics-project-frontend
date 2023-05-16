@@ -9,8 +9,8 @@
 .page-statistic__main{
     height: 700px;
     width: 800px;
-    background-color: #3e4953;
-    background-image: url("../Images/1-1129x800.png");
+    /*background-color: #3e4953;*/
+    /*background-image: url("../Images/1-1129x800.png");*/
 }
 
 .page-statistic__sideBar{
@@ -83,6 +83,14 @@ p span{
     font-weight: 400;
 }
 
+.tooltipWrapper {
+    background: #444444;
+    border: none
+}
+
+.tooltip {
+    color: #ebebeb
+}
 
 
 
