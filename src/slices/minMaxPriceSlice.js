@@ -5,8 +5,7 @@ export const minMaxPriceSlice = createSlice({
     initialState: {
         minMaxPricesMainTicker: {},
         minMaxPricesFirstTicker: {},
-        minMaxPricesSecondTicker: {},
-        minMaxPricesTickerForStatistic: {}
+        minMaxPricesSecondTicker: {}
     },
     reducers: {
         putMinMaxPricesMainTicker(state, action) {
@@ -18,9 +17,6 @@ export const minMaxPriceSlice = createSlice({
         putMinMaxPricesSecondTicker(state, action) {
             state.minMaxPricesSecondTicker = action.payload
         },
-        putMinMaxPricesTickerForStatistic(state, action) {
-            state.minMaxPricesTickerForStatistic = action.payload
-        },
         errorMinMaxPrice(state){
             state = 'Error'
         }
@@ -28,6 +24,6 @@ export const minMaxPriceSlice = createSlice({
 })
 
 export  const {errorMinMaxPrice,putMinMaxPricesMainTicker,
-    putMinMaxPricesFirstTicker, putMinMaxPricesSecondTicker, putMinMaxPricesTickerForStatistic} = minMaxPriceSlice.actions;
+    putMinMaxPricesFirstTicker, putMinMaxPricesSecondTicker} = minMaxPriceSlice.actions;
 
 export  default minMaxPriceSlice.reducer;

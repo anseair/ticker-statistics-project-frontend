@@ -101,6 +101,12 @@ input::placeholder {
     font-weight: normal;
 }
 
+.tickers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 
 

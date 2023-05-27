@@ -4,7 +4,12 @@ import '../../CSS/correlation.css'
 import '../../CSS/statistics.css'
 import styleStat from '../../CSS/stat.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {fetchPriceFirstTicker, fetchPriceForStatistic, fetchPriceSecondTicker} from "../../actions/priceAction";
+import {
+    fetchPriceFirstTicker,
+    fetchPriceForStatistic,
+    fetchPriceForStatisticInvestmentPortfolio,
+    fetchPriceSecondTicker
+} from "../../actions/priceAction";
 import {
     fetchMinMaxPriceFirstTicker,
     fetchMinMaxPriceSecondTicker,
@@ -22,8 +27,8 @@ import {names} from "../../utils/constants";
 
 const Analytics = () => {
 
-    const {priceFirstTicker, priceSecondTicker, priceTickerForStatistic} = useSelector(state => state.prices);
-    const {minMaxPricesFirstTicker, minMaxPricesSecondTicker, minMaxPricesTickerForStatistic} = useSelector(state => state.minMaxPrice);
+    const {priceFirstTicker, priceSecondTicker, priceTickerForStatistic, priceTickerForStatisticInvestmentPortfolio} = useSelector(state => state.prices);
+    const {minMaxPricesFirstTicker, minMaxPricesSecondTicker} = useSelector(state => state.minMaxPrice);
     const {correlation} = useSelector(state => state.correlation);
     const {statistic, statisticForInvestmentPortfolio} = useSelector(state => state.statisticInfo);
     const {allPricesFirstTicker, allPricesSecondTicker} = useSelector(state => state.allPricesForDiagram);
@@ -87,30 +92,22 @@ const Analytics = () => {
         dispatch(fetchAllPricesSecondTicker(secondTicker, dateFrom, dateTo));
     }
 
-    const handleChangeTicker = (e) => {
-        const ticker = e.target.value;
-        // localStorage.setItem('ticker', ticker);
-        setTicker(ticker);
-    }
-
     const handleClickStatistic = () => {
         dispatch(fetchStatistic(ticker, dateFrom2, dateTo2, depositPeriodDays, depositSum));
         localStorage.setItem('statistic', statistic);
         dispatch(fetchPriceForStatistic(ticker));
-        dispatch(fetchMinMaxPriceTickerForStatistic(ticker, dateFrom2, dateTo2));
     }
 
     const handleChangeTickers = (e) => {
-        const tickers = e.target.value;
+        const tickers = e.target.value.trim().replaceAll(" ", "").split(",");
         // localStorage.setItem('ticker', ticker);
-        setTicker(tickers);
+        setTickers(tickers);
     }
 
     const handleClickStatisticForInvestmentPortfolio = () => {
         dispatch(fetchStatisticForInvestmentPortfolio(tickers, dateFrom3, dateTo3, depositPeriodDays2, depositSum2));
         localStorage.setItem('statistic', statisticForInvestmentPortfolio);
-        dispatch(fetchPriceForStatistic(tickers));
-        dispatch(fetchMinMaxPriceTickerForStatistic(tickers, dateFrom3, dateTo3));
+        dispatch(fetchPriceForStatisticInvestmentPortfolio(tickers));
     }
 
     const CustomTooltip = ({payload}) => {
@@ -247,7 +244,7 @@ const Analytics = () => {
                             <div className="input__container">
                                 <label htmlFor="stock">Stock</label>
                                 <input type="text" id="stock" placeholder="^GSPC" className="text"
-                                       onChange={handleChangeTicker}/>
+                                       onChange={(e) => setTicker(e.target.value)}/>
                             </div>
                             <div className="input__container">
                                 <label htmlFor="stock">deposit period days</label>
@@ -265,7 +262,7 @@ const Analytics = () => {
                             </button>
                         </div>
                     <div className={styleStat.correlation}>
-                            <h3 className={styleStat.stock__name}>{names(ticker)}</h3>
+                            <h3 className={styleStat.stock__name}>{names(priceTickerForStatistic.name)}</h3>
                             <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
                             <div className={styleStat.price__now}>
                                 <span className={styleStat.prise}>{priceTickerForStatistic.price}</span>
@@ -274,9 +271,6 @@ const Analytics = () => {
                                 <span
                                     className={priceTickerForStatistic.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatistic.changePersent})%</span>
                             </div>
-                            <p className="min_prise">Min.price: {minMaxPricesTickerForStatistic.min}</p>
-                            <p className="min_prise">Max.price: {minMaxPricesTickerForStatistic.max}</p>
-                        <br/>
                         <table className="table table-hover table-light table-statistic">
                             <tbody>
                             <tr>MINIMUM:</tr>
@@ -358,18 +352,41 @@ const Analytics = () => {
                         </button>
                     </div>
                     <div className={styleStat.correlation}>
-                        <h3 className={styleStat.stock__name}>{names(tickers)}</h3>
-                        <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
-                        <div className={styleStat.price__now}>
-                            <span className={styleStat.prise}>{priceTickerForStatistic.price}</span>
-                            <span
-                                className={priceTickerForStatistic.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatistic.change}</span>
-                            <span
-                                className={priceTickerForStatistic.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatistic.changePersent})%</span>
+                        <div className="tickers">
+                            <div className="ticker">
+                                <h3 className={styleStat.stock__name}>{names(priceTickerForStatisticInvestmentPortfolio[0]?.name)}</h3>
+                                <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
+                                <div className={styleStat.price__now}>
+                                    <span className={styleStat.prise}>{priceTickerForStatisticInvestmentPortfolio[0]?.price}</span>
+                                    <span
+                                        className={priceTickerForStatisticInvestmentPortfolio[0]?.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatisticInvestmentPortfolio[0]?.change}</span>
+                                    <span
+                                        className={priceTickerForStatisticInvestmentPortfolio[0]?.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatisticInvestmentPortfolio[0]?.changePersent})%</span>
+                                </div>
+                            </div>
+                            <div className="ticker">
+                                <h3 className={styleStat.stock__name}>{names(priceTickerForStatisticInvestmentPortfolio[1]?.name)}</h3>
+                                <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
+                                <div className={styleStat.price__now}>
+                                    <span className={styleStat.prise}>{priceTickerForStatisticInvestmentPortfolio[1]?.price}</span>
+                                    <span
+                                        className={priceTickerForStatisticInvestmentPortfolio[1]?.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatisticInvestmentPortfolio[1]?.change}</span>
+                                    <span
+                                        className={priceTickerForStatisticInvestmentPortfolio[1]?.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatisticInvestmentPortfolio[1]?.changePersent})%</span>
+                                </div>
+                            </div>
+                            <div className="ticker">
+                                <h3 className={styleStat.stock__name}>{names(priceTickerForStatisticInvestmentPortfolio[2]?.name)}</h3>
+                                <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
+                                <div className={styleStat.price__now}>
+                                    <span className={styleStat.prise}>{priceTickerForStatisticInvestmentPortfolio[2]?.price}</span>
+                                    <span
+                                        className={priceTickerForStatisticInvestmentPortfolio[2]?.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatisticInvestmentPortfolio[2]?.change}</span>
+                                    <span
+                                        className={priceTickerForStatisticInvestmentPortfolio[2]?.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatisticInvestmentPortfolio[2]?.changePersent})%</span>
+                                </div>
+                            </div>
                         </div>
-                        <p className="min_prise">Min.price: {minMaxPricesTickerForStatistic.min}</p>
-                        <p className="min_prise">Max.price: {minMaxPricesTickerForStatistic.max}</p>
-                        <br/>
                     <table className="table table-hover table-light table-statistic">
                         <tbody>
                         <tr>MINIMUM:</tr>

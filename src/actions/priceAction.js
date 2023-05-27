@@ -4,7 +4,7 @@ import {
     putPriceMainTicker,
     putPriceFirstTicker,
     putPriceSecondTicker,
-    putPrice, putPriceTickerForStatistic
+    putPrice, putPriceTickerForStatistic, putPriceTickerForStatisticInvestmentPortfolio
 } from "../slices/priceSlice";
 
 export const fetchPriceMainTicker = (ticker) => {
@@ -55,18 +55,41 @@ export const fetchPriceSecondTicker = (ticker) => {
 }
 
 export const fetchPriceForStatistic = (ticker) => {
-    return async(dispatch) => {
-        fetch(`${baseUrl8080}/financials/ticker/${ticker}`)
-            .then(response=>response.json())
-            .then(data => {
+    return async (dispatch) => {
+        const response = await fetch(`${baseUrl8080}/financials/ticker/${ticker}`);
+        const data = await response.json();
+        const info = {
+                name: data.date.name,
+                price: (data.priceClose).toFixed(2),
+                change: (data.change).toFixed(2),
+                changePersent: (data.changePersent).toFixed(2)
+            }
+        console.log(info);
+        dispatch(putPriceTickerForStatistic(info))
+    }
+}
+
+export const fetchPriceForStatisticInvestmentPortfolio = (tickers) => {
+    return async (dispatch) => {
+        const res = [];
+            const response = await Promise.all([
+                fetch(`${baseUrl8080}/financials/ticker/${tickers[0]}`),
+                fetch(`${baseUrl8080}/financials/ticker/${tickers[1]}`),
+                fetch(`${baseUrl8080}/financials/ticker/${tickers[2]}`),
+            ]);
+            const data = await Promise.all(response.map(r => r.json()));
+            data.map(data => {
                 const info = {
+                    name: data.date.name,
                     price: (data.priceClose).toFixed(2),
                     change: (data.change).toFixed(2),
                     changePersent: (data.changePersent).toFixed(2)
                 }
-                dispatch(putPriceTickerForStatistic(info))
+                res.push(info);
+
             })
-            .catch(e => dispatch(errorPrice()))
+        console.log(res);
+        dispatch(putPriceTickerForStatisticInvestmentPortfolio(res))
     }
 }
 

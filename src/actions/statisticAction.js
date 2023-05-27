@@ -31,11 +31,12 @@ export const fetchStatistic = (ticker, dateFrom, dateTo, depositPeriodDays, depo
 
 export const fetchStatisticForInvestmentPortfolio = (tickers, dateFrom, dateTo, depositPeriodDays, depositSum) => {
     return async (dispatch) => {
+        console.log(tickers)
         const response = await fetch(`${baseUrl8080}/financials/statistic/investmentPortfolio`, {
             method: "POST",
             body: JSON.stringify(
                 {
-                    "names": [tickers],
+                    "names": tickers,
                     "dateBetween": {
                         "dateFrom": dateFrom,
                         "dateTo": dateTo
