@@ -1,148 +1,123 @@
 import {baseUrl, baseUrl8080} from "../utils/constants";
 import {
-    errorMinMaxPrice, putMaxPriceFirstTicker,
-    putMaxPriceMainTicker, putMaxPriceSecondTicker,
-    putMinPriceFirstTicker,
-    putMinPriceMainTicker, putMinPriceSecondTicker
+    errorMinMaxPrice,
+    putMinMaxPricesFirstTicker,
+    putMinMaxPricesMainTicker,
+    putMinMaxPricesSecondTicker, putMinMaxPricesTickerForStatistic
 } from "../slices/minMaxPriceSlice";
 
 export const fetchMinMaxPriceMainTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
-        Promise.all([
-            fetch(`${baseUrl8080}/financials/min` , {
-                method: 'Post',
-                body: JSON.stringify(
-                    {
-                        "names": [ticker],
-                        "dateBetween":{
-                            "dateFrom": dateFrom,
-                            "dateTo": dateTo
-                        }
+        fetch(`${baseUrl8080}/financials/minMax`, {
+            method: 'Post',
+            body: JSON.stringify(
+                {
+                    "names": [ticker],
+                    "dateBetween": {
+                        "dateFrom": dateFrom,
+                        "dateTo": dateTo
                     }
-                ),
-                headers: {
-                    'Content-Type': "application/json",
                 }
-            }),
-            fetch(`${baseUrl8080}/financials/max`, {
-                method: 'Post',
-                body: JSON.stringify(
-                    {
-                        "names": [ticker],
-                        "dateBetween": {
-                            "dateFrom": dateFrom,
-                            "dateTo": dateTo
-                        }
-                    }
-                ),
-                headers: {
-                    'Content-Type': "application/json",
+            ),
+            headers: {
+                'Content-Type': "application/json",
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const info = {
+                    min: (data.min.priceClose).toFixed(2),
+                    max: (data.max.priceClose).toFixed(2)
                 }
-            }),
-        ])
-            .then(([response1, response2]) =>
-                Promise.all([response1.json(), response2.json()])
-            )
-            .then(([data1, data2]) =>
-                Promise.all([data1.priceClose, data2.priceClose])
-            )
-            .then(([price1, price2]) =>
-                Promise.all([dispatch(putMinPriceMainTicker(price1)), dispatch(putMaxPriceMainTicker(price2))])
-            )
+                dispatch(putMinMaxPricesMainTicker(info))
+            })
             .catch(e => dispatch(errorMinMaxPrice()))
     }
 }
 
 export const fetchMinMaxPriceFirstTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
-        Promise.all([
-            fetch(`${baseUrl8080}/financials/min` , {
-                method: 'Post',
-                body: JSON.stringify(
-                    {
-                        "names": [ticker],
-                        "dateBetween":{
-                            "dateFrom": dateFrom,
-                            "dateTo": dateTo
-                        }
+        fetch(`${baseUrl8080}/financials/minMax`, {
+            method: 'Post',
+            body: JSON.stringify(
+                {
+                    "names": [ticker],
+                    "dateBetween": {
+                        "dateFrom": dateFrom,
+                        "dateTo": dateTo
                     }
-                ),
-                headers: {
-                    'Content-Type': "application/json",
                 }
-            }),
-            fetch(`${baseUrl8080}/financials/max`, {
-                method: 'Post',
-                body: JSON.stringify(
-                    {
-                        "names": [ticker],
-                        "dateBetween": {
-                            "dateFrom": dateFrom,
-                            "dateTo": dateTo
-                        }
-                    }
-                ),
-                headers: {
-                    'Content-Type': "application/json",
+            ),
+            headers: {
+                'Content-Type': "application/json",
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const info = {
+                    min: (data.min.priceClose).toFixed(2),
+                    max: (data.max.priceClose).toFixed(2)
                 }
-            }),
-        ])
-            .then(([response1, response2]) =>
-                Promise.all([response1.json(), response2.json()])
-            )
-            .then(([data1, data2]) =>
-                Promise.all([data1.priceClose, data2.priceClose])
-            )
-            .then(([price1, price2]) =>
-                Promise.all([dispatch(putMinPriceFirstTicker(price1)), dispatch(putMaxPriceFirstTicker(price2))])
-            )
+                dispatch(putMinMaxPricesFirstTicker(info))
+            })
             .catch(e => dispatch(errorMinMaxPrice()))
     }
 }
 
 export const fetchMinMaxPriceSecondTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
-        Promise.all([
-            fetch(`${baseUrl8080}/financials/min` , {
-                method: 'Post',
-                body: JSON.stringify(
-                    {
-                        "names": [ticker],
-                        "dateBetween":{
-                            "dateFrom": dateFrom,
-                            "dateTo": dateTo
-                        }
+        fetch(`${baseUrl8080}/financials/minMax`, {
+            method: 'Post',
+            body: JSON.stringify(
+                {
+                    "names": [ticker],
+                    "dateBetween": {
+                        "dateFrom": dateFrom,
+                        "dateTo": dateTo
                     }
-                ),
-                headers: {
-                    'Content-Type': "application/json",
                 }
-            }),
-            fetch(`${baseUrl8080}/financials/max`, {
-                method: 'Post',
-                body: JSON.stringify(
-                    {
-                        "names": [ticker],
-                        "dateBetween": {
-                            "dateFrom": dateFrom,
-                            "dateTo": dateTo
-                        }
+            ),
+            headers: {
+                'Content-Type': "application/json",
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const info = {
+                    min: (data.min.priceClose).toFixed(2),
+                    max: (data.max.priceClose).toFixed(2)
+                }
+                dispatch(putMinMaxPricesSecondTicker(info))
+            })
+            .catch(e => dispatch(errorMinMaxPrice()))
+    }
+}
+
+export const fetchMinMaxPriceTickerForStatistic = (ticker, dateFrom, dateTo) => {
+    return async (dispatch) => {
+        fetch(`${baseUrl8080}/financials/minMax`, {
+            method: 'Post',
+            body: JSON.stringify(
+                {
+                    "names": [ticker],
+                    "dateBetween": {
+                        "dateFrom": dateFrom,
+                        "dateTo": dateTo
                     }
-                ),
-                headers: {
-                    'Content-Type': "application/json",
                 }
-            }),
-        ])
-            .then(([response1, response2]) =>
-                Promise.all([response1.json(), response2.json()])
-            )
-            .then(([data1, data2]) =>
-                Promise.all([data1.priceClose, data2.priceClose])
-            )
-            .then(([price1, price2]) =>
-                Promise.all([dispatch(putMinPriceSecondTicker(price1)), dispatch(putMaxPriceSecondTicker(price2))])
-            )
+            ),
+            headers: {
+                'Content-Type': "application/json",
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const info = {
+                    min: (data.min.priceClose).toFixed(2),
+                    max: (data.max.priceClose).toFixed(2)
+                }
+                dispatch(putMinMaxPricesTickerForStatistic(info))
+            })
             .catch(e => dispatch(errorMinMaxPrice()))
     }
 }

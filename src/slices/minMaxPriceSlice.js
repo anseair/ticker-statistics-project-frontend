@@ -3,28 +3,23 @@ import {createSlice} from "@reduxjs/toolkit";
 export const minMaxPriceSlice = createSlice({
     name: 'minMaxPrice',
     initialState: {
-        minMaxPricesMainTicker: [],
-        minMaxPriceFirstTicker: [],
-        minMaxPriceSecondTicker: []
+        minMaxPricesMainTicker: {},
+        minMaxPricesFirstTicker: {},
+        minMaxPricesSecondTicker: {},
+        minMaxPricesTickerForStatistic: {}
     },
     reducers: {
-        putMinPriceMainTicker(state, action) {
-            state.minMaxPricesMainTicker[0] = action.payload.toFixed(2)
+        putMinMaxPricesMainTicker(state, action) {
+            state.minMaxPricesMainTicker = action.payload
         },
-        putMaxPriceMainTicker(state, action) {
-            state.minMaxPricesMainTicker[1] = action.payload.toFixed(2)
+        putMinMaxPricesFirstTicker(state, action) {
+            state.minMaxPricesFirstTicker = action.payload
         },
-        putMinPriceFirstTicker(state, action) {
-            state.minMaxPriceFirstTicker[0] = action.payload.toFixed(2)
+        putMinMaxPricesSecondTicker(state, action) {
+            state.minMaxPricesSecondTicker = action.payload
         },
-        putMaxPriceFirstTicker(state, action) {
-            state.minMaxPriceFirstTicker[1] = action.payload.toFixed(2)
-        },
-        putMinPriceSecondTicker(state, action) {
-            state.minMaxPriceSecondTicker[0] = action.payload.toFixed(2)
-        },
-        putMaxPriceSecondTicker(state, action) {
-            state.minMaxPriceSecondTicker[1] = action.payload.toFixed(2)
+        putMinMaxPricesTickerForStatistic(state, action) {
+            state.minMaxPricesTickerForStatistic = action.payload
         },
         errorMinMaxPrice(state){
             state = 'Error'
@@ -32,6 +27,7 @@ export const minMaxPriceSlice = createSlice({
     }
 })
 
-export  const {errorMinMaxPrice, putMaxPriceMainTicker, putMinPriceMainTicker, putMaxPriceFirstTicker, putMinPriceFirstTicker, putMaxPriceSecondTicker, putMinPriceSecondTicker} = minMaxPriceSlice.actions;
+export  const {errorMinMaxPrice,putMinMaxPricesMainTicker,
+    putMinMaxPricesFirstTicker, putMinMaxPricesSecondTicker, putMinMaxPricesTickerForStatistic} = minMaxPriceSlice.actions;
 
 export  default minMaxPriceSlice.reducer;

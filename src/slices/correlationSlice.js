@@ -3,11 +3,11 @@ import {createSlice} from "@reduxjs/toolkit";
 export const correlationSlice = createSlice({
     name: "correlation",
     initialState: {
-        text: ''
+        correlation: ''
     },
     reducers: {
         putCorrelation(state, action) {
-            state.text = action.payload
+            state.correlation = action.payload
         }
     }
 })

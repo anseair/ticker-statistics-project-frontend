@@ -9,13 +9,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 10px;
 }
 
 .correlationPage__form .input__container:not(:last-child){
     margin-bottom: 0;
 }
 .correlationPage__form .input__container{
-    padding: 10px 10px;
+    padding: 10px 5px;
     margin: 10px 0px;
 }
 
@@ -25,10 +26,6 @@
     margin-right: 10px;
 }
 
-/*.correlationPage__form input{*/
-/*    width: 100px;*/
-/*}*/
-
 .correlationPage__form label {
     position: absolute;
     top: -7px;
@@ -36,10 +33,11 @@
     font-size: 12px;
     color: #00000085
 }
+
 .correlation__button{
     padding: 4px 15px;
     border-radius: 3px;
-    margin-top: 10px;
+    margin: 12px 0  4px 10px;
 }
 
 .analysis h2{
@@ -50,25 +48,22 @@
     color: #c50000;
 }
 
-.correlation__chart {
-    height: 398px;
-    width: 768px;
-    background-image: url("../Images/polozhitelnaya-korrelyatsiya-768x398.png");
+.chart {
+    margin: 10px 0;
+    height: 320px;
+    width: 900px;
 }
 
-
-
-/*.input__container {*/
-/*    position: relative;*/
-/*}*/
 
 input {
     color: white;
     background-color: #00000021;
     border: 1px solid #ffffff5e;
-    padding: 12px;
+    padding: 5px;
     border-radius: 2px;
     text-align: center;
+    width: 110px;
+
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -79,18 +74,33 @@ input::placeholder {
     color: #fff;
 }
 
-/*.form__button:hover {*/
-/*    background-color: #7a12127d;*/
-/*    border: 1px solid #7a1212;*/
-/*    color: #ffffff;*/
+/*.page-correlation{*/
+/*    max-width: 1300px;*/
+/*    margin: 0 auto;*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    padding: 50px 0;*/
 /*}*/
 
-/*.form__button {*/
-/*    background-color: #7a1212;*/
-/*    border: 1px solid #7a12127d;*/
-/*}*/
-
-.page-analytics__sideBar{
-    height: 700px;
-    width: 358px;
+.custom-tooltip {
+    margin: 0;
+    border: 1px solid #bbb8b8;
+    background-color: rgba(255, 255, 255);
+    color: black;
+    text-align: left;
 }
+
+.table-statistic {
+ width: 50%;
+}
+.table-statistic tr{
+    font-weight: bold;
+}
+
+.table-statistic th{
+    font-weight: normal;
+}
+
+
+
+

@@ -1,21 +1,20 @@
 .page-statistic{
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    padding: 100px 0;
+    padding: 50px 0;
 }
 
 .page-statistic__main{
-    height: 700px;
-    width: 800px;
-    /*background-color: #3e4953;*/
-    /*background-image: url("../Images/1-1129x800.png");*/
+    width: 900px;
+    padding-right: 10px;
 }
 
 .page-statistic__sideBar{
     height: 700px;
-    width: 358px;
+    width: 400px;
+    padding-left: 10px;
 }
 
 .form-select{
@@ -90,6 +89,15 @@ p span{
 
 .tooltip {
     color: #ebebeb
+}
+
+.btnPeriod {
+    background-color: transparent;
+    color: #444444;
+    border-color: transparent;
+    margin-bottom: 15px;
+    padding: 5px 0;
+    font-size: 18px;
 }
 
 

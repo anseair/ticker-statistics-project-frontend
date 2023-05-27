@@ -1,20 +1,16 @@
 import React, {useEffect} from 'react';
 import style from '../../CSS/statistic.module.css'
 import styleStat from '../../CSS/stat.module.css'
-import {fetchPriceAAPL, fetchPriceAMZN, fetchPriceGSPC, fetchPriceMSFT, fetchPriceTSLA} from "../../actions/priceAction";
+import {fetchPrice} from "../../actions/priceAction";
 import {useDispatch, useSelector} from "react-redux";
 
 const StatisticBox = () => {
-    const {pricesAllTickers, beforePricesAllTickers} = useSelector(state => state.prices);
+    const {tickers} = useSelector(state => state.tickers);
+    const {pricesAll} = useSelector(state => state.prices);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // dispatch(fetchPrice(tickers[random]));
-        dispatch(fetchPriceAAPL('AAPL'));
-        dispatch(fetchPriceAMZN('AMZN'));
-        dispatch(fetchPriceMSFT('MSFT'));
-        dispatch(fetchPriceTSLA('TSLA'));
-        dispatch(fetchPriceGSPC('%5EGSPC'));
+        dispatch(fetchPrice(tickers));
     }, []);
 
     return (
@@ -34,34 +30,28 @@ const StatisticBox = () => {
                     </thead>
                     <tbody>
                     <tr>
-                        <th className={styleStat.stock} scope="row">AAPL</th>
-                        <td>{pricesAllTickers[0]}</td>
-                        <td className={(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2)}</td>
-                        <td className={(pricesAllTickers[0]-beforePricesAllTickers[0]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[0]-beforePricesAllTickers[0])/pricesAllTickers[0]*100).toFixed(2)}%</td>
+                        <th className={styleStat.stock} scope="row">{pricesAll[0]?.name}</th>
+                        <td>{pricesAll[0]?.price}</td>
+                        <td className={pricesAll[0]?.change < 0 ? styleStat.red : styleStat.green}>{pricesAll[0]?.change}</td>
+                        <td className={pricesAll[0]?.changePersent < 0 ? styleStat.red :  styleStat.green}>({pricesAll[0]?.changePersent})%</td>
                     </tr>
                     <tr>
-                        <th className={styleStat.stock} scope="row">AMZN</th>
-                        <td>{pricesAllTickers[1]}</td>
-                        <td className={(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2)}</td>
-                        <td className={(pricesAllTickers[1]-beforePricesAllTickers[1]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[1]-beforePricesAllTickers[1])/pricesAllTickers[1]*100).toFixed(2)}%</td>
+                        <th className={styleStat.stock} scope="row">{pricesAll[1]?.name}</th>
+                        <td>{pricesAll[1]?.price}</td>
+                        <td className={pricesAll[1]?.change < 0 ? styleStat.red : styleStat.green}>{pricesAll[1]?.change}</td>
+                        <td className={pricesAll[1]?.changePersent < 0 ? styleStat.red :  styleStat.green}>({pricesAll[1]?.changePersent})%</td>
                     </tr>
                     <tr>
-                        <th className={styleStat.stock} scope="row">MSFT</th>
-                        <td>{pricesAllTickers[2]}</td>
-                        <td className={(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2)}</td>
-                        <td className={(pricesAllTickers[2]-beforePricesAllTickers[2]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[2]-beforePricesAllTickers[2])/pricesAllTickers[2]*100).toFixed(2)}%</td>
+                        <th className={styleStat.stock} scope="row">{pricesAll[2]?.name}</th>
+                        <td>{pricesAll[2]?.price}</td>
+                        <td className={pricesAll[2]?.change < 0 ? styleStat.red : styleStat.green}>{pricesAll[2]?.change}</td>
+                        <td className={pricesAll[2]?.changePersent < 0 ? styleStat.red :  styleStat.green}>({pricesAll[2]?.changePersent})%</td>
                     </tr>
                     <tr>
-                        <th className={styleStat.stock} scope="row">TSLA</th>
-                        <td>{pricesAllTickers[3]}</td>
-                        <td className={(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2)}</td>
-                        <td className={(pricesAllTickers[3]-beforePricesAllTickers[3]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[3]-beforePricesAllTickers[3])/pricesAllTickers[3]*100).toFixed(2)}%</td>
-                    </tr>
-                    <tr>
-                        <th className={styleStat.stock} scope="row">^GSPC</th>
-                        <td>{pricesAllTickers[4]}</td>
-                        <td className={(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2)}</td>
-                        <td className={(pricesAllTickers[4]-beforePricesAllTickers[4]).toFixed(2) < 0 ? styleStat.red :  styleStat.green}>{((pricesAllTickers[4]-beforePricesAllTickers[4])/pricesAllTickers[4]*100).toFixed(2)}%</td>
+                        <th className={styleStat.stock} scope="row">{pricesAll[3]?.name}</th>
+                        <td>{pricesAll[3]?.price}</td>
+                        <td className={pricesAll[3]?.change < 0 ? styleStat.red : styleStat.green}>{pricesAll[3]?.change}</td>
+                        <td className={pricesAll[3]?.changePersent < 0 ? styleStat.red :  styleStat.green}>({pricesAll[3]?.changePersent})%</td>
                     </tr>
                     </tbody>
                 </table>

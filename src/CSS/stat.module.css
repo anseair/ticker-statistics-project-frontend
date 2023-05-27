@@ -13,8 +13,8 @@
 }
 
 .stock__name {
-    font-weight: 400;
-    font-size: 17px;
+    font-weight: bold;
+    font-size: 1.3em;
     letter-spacing: 1px;
     margin-bottom: 15px;
 }
@@ -58,11 +58,11 @@
 .correlation {
     align-items: center;
     color: black;
-    padding: 10px 5px;
+    padding: 10px 10px;
     border: 1px solid #b5a8a875;
     background-color: #f2f2f2;
     border-radius: 3px;
-    margin-bottom: 30px;
+    margin: 40px 0;
     text-align: left;
 }
 
