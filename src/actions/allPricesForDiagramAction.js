@@ -1,4 +1,4 @@
-import {baseUrl8080} from "../utils/constants";
+import {baseUrl, baseUrl8080, dateStr} from "../utils/constants";
 import {
     putAllPricesFirstTicker,
     putAllPricesMainTicker,
@@ -7,7 +7,7 @@ import {
 
 export const fetchAllPricesMainTicker = (ticker, dateFrom, dateTo) => {
     return async (dispatch) => {
-        const response = await(fetch(`${baseUrl8080}/financials/period`, {
+        const response = await(fetch(`${baseUrl}/financials/period`, {
             method: "POST",
             body: JSON.stringify({
                 names: [ticker],
@@ -30,7 +30,43 @@ export const fetchAllPricesMainTicker = (ticker, dateFrom, dateTo) => {
                 }
                 info.push(info2);
             }
-            console.log(info);
+            dispatch(putAllPricesMainTicker(info));
+        } else{
+            throw new Error(response.status.toString())
+        }
+    }
+}
+
+export const fetchAllPricesMainTickerForFiveDays = (ticker) => {
+    const count = 1000 * 60 * 60 * 24 * 5;
+    const dateTo = new Date("2023-04-20");
+    const dateFrom = new Date(dateTo - count);
+    const dateToStr = dateStr(dateTo);
+    const dateFromStr = dateStr(dateFrom);
+    return async (dispatch) => {
+        const response = await(fetch(`${baseUrl}/financials/period`, {
+            method: "POST",
+            body: JSON.stringify({
+                names: [ticker],
+                dateBetween: {
+                    dateFrom: dateFromStr,
+                    dateTo: dateToStr
+                }
+            }),
+            headers: {
+                'Content-Type': "application/json",
+            }
+        }));
+        if (response.ok){
+            const data = await response.json();
+            const info = [];
+            for (let i = 0; i < data.length; i++) {
+                const info2 = {
+                    date: data[i].date.date,
+                    price: data[i].priceClose
+                }
+                info.push(info2);
+            }
             dispatch(putAllPricesMainTicker(info));
         } else{
             throw new Error(response.status.toString())
@@ -40,7 +76,7 @@ export const fetchAllPricesMainTicker = (ticker, dateFrom, dateTo) => {
 
 export const fetchAllPricesFirstTicker = (firstTicker, dateFrom, dateTo) => {
     return async (dispatch) => {
-        const response = await(fetch(`${baseUrl8080}/financials/period`, {
+        const response = await(fetch(`${baseUrl}/financials/period`, {
             method: "POST",
             body: JSON.stringify({
                 names: [firstTicker],
@@ -63,7 +99,6 @@ export const fetchAllPricesFirstTicker = (firstTicker, dateFrom, dateTo) => {
                 }
                 info.push(info2);
             }
-            console.log(info);
             dispatch(putAllPricesFirstTicker(info));
         } else{
             throw new Error(response.status.toString())
@@ -73,7 +108,7 @@ export const fetchAllPricesFirstTicker = (firstTicker, dateFrom, dateTo) => {
 
 export const fetchAllPricesSecondTicker = (secondTicker, dateFrom, dateTo) => {
     return async (dispatch) => {
-        const response = await(fetch(`${baseUrl8080}/financials/period`, {
+        const response = await(fetch(`${baseUrl}/financials/period`, {
             method: "POST",
             body: JSON.stringify({
                 names: [secondTicker],
@@ -96,7 +131,6 @@ export const fetchAllPricesSecondTicker = (secondTicker, dateFrom, dateTo) => {
                 }
                 info.push(info2);
             }
-            console.log(info);
             dispatch(putAllPricesSecondTicker(info));
         } else{
             throw new Error(response.status.toString())

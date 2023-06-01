@@ -8,10 +8,10 @@ export const statisticSlice = createSlice({
     },
     reducers: {
         putStatistic(state, action){
-            return action.payload;
+            state.statistic = action.payload;
         },
         putStatisticForInvestmentPortfolio(state, action){
-            return action.payload;
+            state.statisticForInvestmentPortfolio = action.payload;
         },
     }
 })

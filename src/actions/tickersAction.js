@@ -3,7 +3,7 @@ import {putTickers} from "../slices/tickersSlice";
 
 export const fetchTickers = () => {
     return async (dispatch) => {
-        const response = await fetch(`${baseUrl8080}/financials/tickers`);
+        const response = await fetch(`${baseUrl}/financials/tickers`);
         if (response.ok) {
             const data = await response.json();
             dispatch(putTickers(data))

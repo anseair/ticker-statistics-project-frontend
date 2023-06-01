@@ -1,14 +1,15 @@
-import {baseUrl, baseUrl8080} from "../utils/constants";
+import {baseUrl, baseUrl8080, dateStr} from "../utils/constants";
 import {
     errorMinMaxPrice,
     putMinMaxPricesFirstTicker,
-    putMinMaxPricesMainTicker,
+    putMinMaxPricesMainTicker, putMinMaxPricesMainTickerForPeriod,
     putMinMaxPricesSecondTicker
 } from "../slices/minMaxPriceSlice";
 
-export const fetchMinMaxPriceMainTicker = (ticker, dateFrom, dateTo) => {
+export const fetchMinMaxPriceMainTickerForPeriod = (ticker, dateFrom, dateTo) => {
+
     return async (dispatch) => {
-        fetch(`${baseUrl8080}/financials/minMax`, {
+        fetch(`${baseUrl}/financials/minMax`, {
             method: 'Post',
             body: JSON.stringify(
                 {
@@ -16,6 +17,40 @@ export const fetchMinMaxPriceMainTicker = (ticker, dateFrom, dateTo) => {
                     "dateBetween": {
                         "dateFrom": dateFrom,
                         "dateTo": dateTo
+                    }
+                }
+            ),
+            headers: {
+                'Content-Type': "application/json",
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const info = {
+                    min: (data.min.priceClose).toFixed(2),
+                    max: (data.max.priceClose).toFixed(2)
+                }
+                dispatch(putMinMaxPricesMainTickerForPeriod(info))
+            })
+            .catch(e => dispatch(errorMinMaxPrice()))
+    }
+}
+
+export const fetchMinMaxPriceMainTicker = (ticker) => {
+    const count = 1000 * 60 * 60 * 24 * 365;
+    const dateTo = new Date();
+    const dateFrom = new Date(dateTo - count);
+    const dateToStr = dateStr(dateTo);
+    const dateFromStr = dateStr(dateFrom);
+    return async (dispatch) => {
+        fetch(`${baseUrl}/financials/minMax`, {
+            method: 'Post',
+            body: JSON.stringify(
+                {
+                    "names": [ticker],
+                    "dateBetween": {
+                        "dateFrom": dateFromStr,
+                        "dateTo": dateToStr
                     }
                 }
             ),
@@ -35,16 +70,22 @@ export const fetchMinMaxPriceMainTicker = (ticker, dateFrom, dateTo) => {
     }
 }
 
-export const fetchMinMaxPriceFirstTicker = (ticker, dateFrom, dateTo) => {
+
+export const fetchMinMaxPriceFirstTicker = (ticker) => {
+    const count = 1000 * 60 * 60 * 24 * 365;
+    const dateTo = new Date();
+    const dateFrom = new Date(dateTo - count);
+    const dateToStr = dateStr(dateTo);
+    const dateFromStr = dateStr(dateFrom);
     return async (dispatch) => {
-        fetch(`${baseUrl8080}/financials/minMax`, {
+        fetch(`${baseUrl}/financials/minMax`, {
             method: 'Post',
             body: JSON.stringify(
                 {
                     "names": [ticker],
                     "dateBetween": {
-                        "dateFrom": dateFrom,
-                        "dateTo": dateTo
+                        "dateFrom": dateFromStr,
+                        "dateTo": dateToStr
                     }
                 }
             ),
@@ -64,16 +105,21 @@ export const fetchMinMaxPriceFirstTicker = (ticker, dateFrom, dateTo) => {
     }
 }
 
-export const fetchMinMaxPriceSecondTicker = (ticker, dateFrom, dateTo) => {
+export const fetchMinMaxPriceSecondTicker = (ticker) => {
+    const count = 1000 * 60 * 60 * 24 * 365;
+    const dateTo = new Date();
+    const dateFrom = new Date(dateTo - count);
+    const dateToStr = dateStr(dateTo);
+    const dateFromStr = dateStr(dateFrom);
     return async (dispatch) => {
-        fetch(`${baseUrl8080}/financials/minMax`, {
+        fetch(`${baseUrl}/financials/minMax`, {
             method: 'Post',
             body: JSON.stringify(
                 {
                     "names": [ticker],
                     "dateBetween": {
-                        "dateFrom": dateFrom,
-                        "dateTo": dateTo
+                        "dateFrom": dateFromStr,
+                        "dateTo": dateToStr
                     }
                 }
             ),

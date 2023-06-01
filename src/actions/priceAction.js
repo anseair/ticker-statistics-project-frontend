@@ -1,15 +1,15 @@
-import {baseUrl, baseUrl8080, randomNum} from "../utils/constants";
+import {baseUrl, baseUrl8080} from "../utils/constants";
 import {
     errorPrice,
     putPriceMainTicker,
     putPriceFirstTicker,
     putPriceSecondTicker,
-    putPrice, putPriceTickerForStatistic, putPriceTickerForStatisticInvestmentPortfolio
+    putPrice, putPriceTickerForStatistic, putPriceTickerForStatisticInvestmentPortfolio, pendingPrices
 } from "../slices/priceSlice";
 
 export const fetchPriceMainTicker = (ticker) => {
     return async (dispatch) => {
-        fetch(`${baseUrl8080}/financials/ticker/${ticker}`)
+        fetch(`${baseUrl}/financials/ticker/${ticker}`)
             .then(response=>response.json())
             .then(data => {
                 const info = {
@@ -25,7 +25,7 @@ export const fetchPriceMainTicker = (ticker) => {
 
 export const fetchPriceFirstTicker = (ticker) => {
     return async (dispatch) => {
-        fetch(`${baseUrl8080}/financials/ticker/${ticker}`)
+        fetch(`${baseUrl}/financials/ticker/${ticker}`)
             .then(response=>response.json())
             .then(data => {
                 const info = {
@@ -40,7 +40,7 @@ export const fetchPriceFirstTicker = (ticker) => {
 }
 export const fetchPriceSecondTicker = (ticker) => {
     return async (dispatch) => {
-        fetch(`${baseUrl8080}/financials/ticker/${ticker}`)
+        fetch(`${baseUrl}/financials/ticker/${ticker}`)
             .then(response=>response.json())
             .then(data => {
                 const info = {
@@ -54,9 +54,9 @@ export const fetchPriceSecondTicker = (ticker) => {
     }
 }
 
-export const fetchPriceForStatistic = (ticker) => {
+export const fetchPriceTickerForStatistic = (ticker) => {
     return async (dispatch) => {
-        const response = await fetch(`${baseUrl8080}/financials/ticker/${ticker}`);
+        const response = await fetch(`${baseUrl}/financials/ticker/${ticker}`);
         const data = await response.json();
         const info = {
                 name: data.date.name,
@@ -64,19 +64,44 @@ export const fetchPriceForStatistic = (ticker) => {
                 change: (data.change).toFixed(2),
                 changePersent: (data.changePersent).toFixed(2)
             }
-        console.log(info);
         dispatch(putPriceTickerForStatistic(info))
     }
 }
 
-export const fetchPriceForStatisticInvestmentPortfolio = (tickers) => {
+
+export const fetchPriceTickerForStatisticInvestmentPortfolio = (tickers) => {
     return async (dispatch) => {
         const res = [];
-            const response = await Promise.all([
-                fetch(`${baseUrl8080}/financials/ticker/${tickers[0]}`),
-                fetch(`${baseUrl8080}/financials/ticker/${tickers[1]}`),
-                fetch(`${baseUrl8080}/financials/ticker/${tickers[2]}`),
-            ]);
+        const response = [];
+        for(let i = 0; i < tickers.length; i++){
+            response.push(await
+                fetch(`${baseUrl}/financials/ticker/${tickers[i]}`)
+            );
+        }
+        const data = await Promise.all(response.map(r => r.json()));
+            data.map(data => {
+                const info = {
+                    name: data.date.name,
+                    price: (data.priceClose).toFixed(2),
+                    change: (data.change).toFixed(2),
+                    changePersent: (data.changePersent).toFixed(2)
+                }
+                res.push(info);
+            })
+        dispatch(putPriceTickerForStatisticInvestmentPortfolio(res))
+    }
+}
+
+export const fetchPrice = (tickers) => {
+    return async (dispatch) => {
+        dispatch(pendingPrices('Pending'));
+        const res = [];
+        const response = []
+        for(let i = 0; i < tickers.length; i++){
+            response.push(await
+                fetch(`${baseUrl}/financials/ticker/${tickers[i]}`)
+            );
+        }
             const data = await Promise.all(response.map(r => r.json()));
             data.map(data => {
                 const info = {
@@ -86,34 +111,8 @@ export const fetchPriceForStatisticInvestmentPortfolio = (tickers) => {
                     changePersent: (data.changePersent).toFixed(2)
                 }
                 res.push(info);
-
             })
-        console.log(res);
-        dispatch(putPriceTickerForStatisticInvestmentPortfolio(res))
-    }
-}
-
-export const fetchPrice = (tickers) => {
-    return async (dispatch) => {
-        const res = [];
-        const randomTickers = randomNum(tickers);
-        const response = await Promise.all([
-            fetch(`${baseUrl8080}/financials/ticker/${randomTickers[0]}`),
-            fetch(`${baseUrl8080}/financials/ticker/${randomTickers[1]}`),
-            fetch(`${baseUrl8080}/financials/ticker/${randomTickers[2]}`),
-            fetch(`${baseUrl8080}/financials/ticker/${randomTickers[3]}`),
-        ]);
-        const data = await Promise.all(response.map(r => r.json()));
-        data.map(data => {
-            const info = {
-                name: data.date.name,
-                price: (data.priceClose).toFixed(2),
-                change: (data.change).toFixed(2),
-                changePersent: (data.changePersent).toFixed(2)
-            }
-            res.push(info);
-        })
-        console.log(res);
-        dispatch(putPrice(res));
+            dispatch(putPrice(res));
+            dispatch(pendingPrices('Done'))
     }
 }

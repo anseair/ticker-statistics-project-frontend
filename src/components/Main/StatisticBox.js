@@ -3,15 +3,19 @@ import style from '../../CSS/statistic.module.css'
 import styleStat from '../../CSS/stat.module.css'
 import {fetchPrice} from "../../actions/priceAction";
 import {useDispatch, useSelector} from "react-redux";
+import {fetchTickers} from "../../actions/tickersAction";
+import {randomNum} from "../../utils/constants";
 
 const StatisticBox = () => {
     const {tickers} = useSelector(state => state.tickers);
     const {pricesAll} = useSelector(state => state.prices);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(fetchPrice(tickers));
-    }, []);
+    useEffect( () => {
+        dispatch(fetchTickers());
+        const randomTickers = randomNum(tickers);
+        dispatch(fetchPrice(randomTickers));
+    }, [tickers[0]]);
 
     return (
         <div className={style.statistic__box}>
@@ -33,25 +37,25 @@ const StatisticBox = () => {
                         <th className={styleStat.stock} scope="row">{pricesAll[0]?.name}</th>
                         <td>{pricesAll[0]?.price}</td>
                         <td className={pricesAll[0]?.change < 0 ? styleStat.red : styleStat.green}>{pricesAll[0]?.change}</td>
-                        <td className={pricesAll[0]?.changePersent < 0 ? styleStat.red :  styleStat.green}>({pricesAll[0]?.changePersent})%</td>
+                        <td className={pricesAll[0]?.changePersent < 0 ? styleStat.red : styleStat.green}>({pricesAll[0]?.changePersent})%</td>
                     </tr>
                     <tr>
                         <th className={styleStat.stock} scope="row">{pricesAll[1]?.name}</th>
                         <td>{pricesAll[1]?.price}</td>
                         <td className={pricesAll[1]?.change < 0 ? styleStat.red : styleStat.green}>{pricesAll[1]?.change}</td>
-                        <td className={pricesAll[1]?.changePersent < 0 ? styleStat.red :  styleStat.green}>({pricesAll[1]?.changePersent})%</td>
+                        <td className={pricesAll[1]?.changePersent < 0 ? styleStat.red : styleStat.green}>({pricesAll[1]?.changePersent})%</td>
                     </tr>
                     <tr>
                         <th className={styleStat.stock} scope="row">{pricesAll[2]?.name}</th>
                         <td>{pricesAll[2]?.price}</td>
                         <td className={pricesAll[2]?.change < 0 ? styleStat.red : styleStat.green}>{pricesAll[2]?.change}</td>
-                        <td className={pricesAll[2]?.changePersent < 0 ? styleStat.red :  styleStat.green}>({pricesAll[2]?.changePersent})%</td>
+                        <td className={pricesAll[2]?.changePersent < 0 ? styleStat.red : styleStat.green}>({pricesAll[2]?.changePersent})%</td>
                     </tr>
                     <tr>
                         <th className={styleStat.stock} scope="row">{pricesAll[3]?.name}</th>
                         <td>{pricesAll[3]?.price}</td>
                         <td className={pricesAll[3]?.change < 0 ? styleStat.red : styleStat.green}>{pricesAll[3]?.change}</td>
-                        <td className={pricesAll[3]?.changePersent < 0 ? styleStat.red :  styleStat.green}>({pricesAll[3]?.changePersent})%</td>
+                        <td className={pricesAll[3]?.changePersent < 0 ? styleStat.red : styleStat.green}>({pricesAll[3]?.changePersent})%</td>
                     </tr>
                     </tbody>
                 </table>

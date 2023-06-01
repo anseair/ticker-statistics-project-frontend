@@ -62,7 +62,6 @@ img {
     align-items: center;
 }
 
-/*button*/
 .button {
     background-color: transparent;
     border: 1px solid #ffffff;
@@ -89,9 +88,4 @@ button:hover {
     background-color: #7a1212;
     border: 1px solid #7a12127d;
 }
-
-.input__container {
-    position: relative;
-}
-
 

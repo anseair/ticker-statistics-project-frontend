@@ -3,7 +3,7 @@ import {putStatistic, putStatisticForInvestmentPortfolio} from "../slices/statis
 
 export const fetchStatistic = (ticker, dateFrom, dateTo, depositPeriodDays, depositSum) => {
     return async (dispatch) => {
-        const response = await fetch(`${baseUrl8080}/financials/statistic`, {
+        const response = await fetch(`${baseUrl}/financials/statistic`, {
             method: "POST",
             body: JSON.stringify(
                 {
@@ -31,8 +31,7 @@ export const fetchStatistic = (ticker, dateFrom, dateTo, depositPeriodDays, depo
 
 export const fetchStatisticForInvestmentPortfolio = (tickers, dateFrom, dateTo, depositPeriodDays, depositSum) => {
     return async (dispatch) => {
-        console.log(tickers)
-        const response = await fetch(`${baseUrl8080}/financials/statistic/investmentPortfolio`, {
+        const response = await fetch(`${baseUrl}/financials/statistic/investmentPortfolio`, {
             method: "POST",
             body: JSON.stringify(
                 {

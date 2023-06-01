@@ -8,7 +8,8 @@ export const priceSlice = createSlice({
         priceSecondTicker: {},
         priceTickerForStatistic: {},
         priceTickerForStatisticInvestmentPortfolio: [],
-        pricesAll: []
+        pricesAll: [],
+        text: ''
     },
     reducers: {
         putPrice(state, action) {
@@ -31,10 +32,13 @@ export const priceSlice = createSlice({
         },
         errorPrice(state){
             state = 'Error';
-        }
+        },
+        pendingPrices(state, action) {
+            state.text = action.payload;
+        },
     }
 })
 export const {putPriceMainTicker,  putPriceFirstTicker, putPriceSecondTicker, putPriceTickerForStatistic,
     putPriceTickerForStatisticInvestmentPortfolio,
-    putPrice, errorPrice } = priceSlice.actions;
+    putPrice, errorPrice, pendingPrices } = priceSlice.actions;
 export default priceSlice.reducer;

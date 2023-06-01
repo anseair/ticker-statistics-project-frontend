@@ -8,13 +8,11 @@ import {navItems} from "./utils/constants";
 function App() {
     const [currentPage, setCurrentPage] = useState(navItems[0]);
     return (
-        // <body>
         <>
         <Header changePage={setCurrentPage}/>
         <Main currentPage={currentPage}/>
         <Footer/>
         </>
-        // </body>
     );
 }
 

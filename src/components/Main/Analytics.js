@@ -6,14 +6,13 @@ import styleStat from '../../CSS/stat.module.css'
 import {useDispatch, useSelector} from "react-redux";
 import {
     fetchPriceFirstTicker,
-    fetchPriceForStatistic,
-    fetchPriceForStatisticInvestmentPortfolio,
+    fetchPriceTickerForStatistic,
+    fetchPriceTickerForStatisticInvestmentPortfolio,
     fetchPriceSecondTicker
 } from "../../actions/priceAction";
 import {
     fetchMinMaxPriceFirstTicker,
-    fetchMinMaxPriceSecondTicker,
-    fetchMinMaxPriceTickerForStatistic
+    fetchMinMaxPriceSecondTicker
 } from "../../actions/minMaxPriceAction";
 import {fetchCorrelation} from "../../actions/correlationAction";
 import {fetchStatistic, fetchStatisticForInvestmentPortfolio} from "../../actions/statisticAction";
@@ -24,10 +23,17 @@ import {
     fetchAllPricesSecondTicker
 } from "../../actions/allPricesForDiagramAction";
 import {names} from "../../utils/constants";
+import TickerForInvestmentPortfolio from "./TickerForInvestmentPortfolio";
 
 const Analytics = () => {
 
-    const {priceFirstTicker, priceSecondTicker, priceTickerForStatistic, priceTickerForStatisticInvestmentPortfolio} = useSelector(state => state.prices);
+    const {
+        priceFirstTicker,
+        priceSecondTicker,
+        priceTickerForStatistic,
+        priceTickerForStatisticInvestmentPortfolio
+    } = useSelector(state => state.prices);
+
     const {minMaxPricesFirstTicker, minMaxPricesSecondTicker} = useSelector(state => state.minMaxPrice);
     const {correlation} = useSelector(state => state.correlation);
     const {statistic, statisticForInvestmentPortfolio} = useSelector(state => state.statisticInfo);
@@ -45,17 +51,35 @@ const Analytics = () => {
     const [depositPeriodDays, setDepositPeriodDays] = useState('');
     const [depositSum, setDepositSum] = useState('');
 
-    const [tickers, setTickers] = useState('');
+    const [tickers, setTickers] = useState([]);
     const [dateFrom3, setDateFrom3] = useState('');
     const [dateTo3, setDateTo3] = useState('');
     const [depositPeriodDays2, setDepositPeriodDays2] = useState('');
     const [depositSum2, setDepositSum2] = useState('');
+
+    useEffect(() => {
+        if (localStorage.getItem('firstTicker')) {
+            const firstTicker1 = localStorage.getItem('firstTicker');
+            setFirstTicker(firstTicker1);
+            dispatch(fetchPriceFirstTicker(firstTicker1));
+            dispatch(fetchMinMaxPriceFirstTicker(firstTicker1));
+
+        }
+        if (localStorage.getItem('secondTicker')) {
+            const secondTicker1 = localStorage.getItem('secondTicker');
+            setSecondTicker(secondTicker1);
+            dispatch(fetchPriceSecondTicker(secondTicker1));
+            dispatch(fetchMinMaxPriceSecondTicker(secondTicker1));
+        }
+
+    }, [])
 
     const handleChangeFirstTicker = (e) => {
         const firstTicker = e.target.value;
         localStorage.setItem('firstTicker', firstTicker);
         setFirstTicker(firstTicker);
         dispatch(fetchPriceFirstTicker(firstTicker));
+        dispatch(fetchMinMaxPriceFirstTicker(firstTicker));
     }
 
     const handleChangeSecondTicker = (e) => {
@@ -63,51 +87,44 @@ const Analytics = () => {
         localStorage.setItem('secondTicker', secondTicker);
         setSecondTicker(secondTicker);
         dispatch(fetchPriceSecondTicker(secondTicker));
+        dispatch(fetchMinMaxPriceSecondTicker(secondTicker));
     }
 
-    useEffect(() => {
-        if (localStorage.getItem('firstTicker')) {
-            const firstTicker1 = localStorage.getItem('firstTicker');
-            setFirstTicker(firstTicker1);
-            dispatch(fetchPriceFirstTicker(firstTicker1));
-        }
-    }, [])
 
-    useEffect(() => {
-        if (localStorage.getItem('secondTicker')) {
-            const secondTicker1 = localStorage.getItem('secondTicker');
-            setSecondTicker(secondTicker1);
-            dispatch(fetchPriceSecondTicker(secondTicker1));
-        }
-    }, [])
+    const handleChangeDateFrom = (e) => {
+        const dateFrom = e.target.value;
+        setDateFrom(dateFrom);
+    }
+
+    const handleChangeDateTo = (e) => {
+        const dateTo = e.target.value;
+        setDateTo(dateTo);
+    }
 
     const handleClickCorrelation = () => {
-        dispatch(fetchMinMaxPriceFirstTicker(firstTicker, dateFrom, dateTo));
-        dispatch(fetchMinMaxPriceSecondTicker(secondTicker, dateFrom, dateTo));
-        localStorage.setItem('minMaxPriceFirstTicker', minMaxPricesFirstTicker);
-        localStorage.setItem('minMaxPriceSecondTicker', minMaxPricesSecondTicker);
         dispatch(fetchCorrelation(firstTicker, secondTicker, dateFrom, dateTo));
-        localStorage.setItem('correlation', correlation);
         dispatch(fetchAllPricesFirstTicker(firstTicker, dateFrom, dateTo));
         dispatch(fetchAllPricesSecondTicker(secondTicker, dateFrom, dateTo));
     }
 
+    const handleChangeTicker = (e) => {
+        const ticker = e.target.value;
+        setTicker(ticker);
+    }
+
     const handleClickStatistic = () => {
+        dispatch(fetchPriceTickerForStatistic(ticker));
         dispatch(fetchStatistic(ticker, dateFrom2, dateTo2, depositPeriodDays, depositSum));
-        localStorage.setItem('statistic', statistic);
-        dispatch(fetchPriceForStatistic(ticker));
     }
 
     const handleChangeTickers = (e) => {
         const tickers = e.target.value.trim().replaceAll(" ", "").split(",");
-        // localStorage.setItem('ticker', ticker);
         setTickers(tickers);
     }
 
     const handleClickStatisticForInvestmentPortfolio = () => {
+        dispatch(fetchPriceTickerForStatisticInvestmentPortfolio(tickers));
         dispatch(fetchStatisticForInvestmentPortfolio(tickers, dateFrom3, dateTo3, depositPeriodDays2, depositSum2));
-        localStorage.setItem('statistic', statisticForInvestmentPortfolio);
-        dispatch(fetchPriceForStatisticInvestmentPortfolio(tickers));
     }
 
     const CustomTooltip = ({payload}) => {
@@ -135,12 +152,12 @@ const Analytics = () => {
                         <div className="input__container">
                             <label htmlFor="dateFrom">From</label>
                             <input type="date" id="dateFrom" className="text"
-                                   onChange={(e) => setDateFrom(e.target.value)}/>
+                                   onChange={handleChangeDateFrom}/>
                         </div>
                         <div className="input__container">
                             <label htmlFor="dateTo">To</label>
                             <input type="date" id="dateTo" className="text"
-                                   onChange={(e) => setDateTo(e.target.value)}/>
+                                   onChange={handleChangeDateTo}/>
                         </div>
                         <div className="input__container">
                             <label htmlFor="stock">First stock</label>
@@ -191,7 +208,8 @@ const Analytics = () => {
                                 }}
                                 dataKey="price2" domain={['auto', 'auto']} yAxisId={"right"}
                                 orientation={"right"}>
-                                <Label value={`${correlation.substring(0, correlation.indexOf(":"))}`} offset={-40} position="bottom"/>
+                                <Label value={`${correlation.substring(0, correlation.indexOf(":"))}`} offset={-40}
+                                       position="bottom"/>
                             </YAxis>
                             <CartesianGrid strokeWidth="0.5"/>
                             <Tooltip content={<CustomTooltip/>}/>
@@ -218,16 +236,25 @@ const Analytics = () => {
                         </LineChart>
                     </div>
                     <div className={styleStat.correlation}>
-                        <p className={styleStat.stock__name}>Correlation
-                            between {names(firstTicker)} and {names(secondTicker)} is {correlation}</p>
-                        <p>The correlation between historical prices or returns on {names(firstTicker)} and {names(secondTicker)} is
-                            a relative statistical measure of the degree to which these equity instruments
-                            tend to move together. The correlation coefficient measures the extent to which
-                            returns on {names(secondTicker)} Class are associated (or correlated) with {names(firstTicker)}. Values
-                            of the correlation coefficient range from -1 to +1, where. The correlation of
-                            zero (0) is possible when the price movement of {names(firstTicker)} has no effect on the
-                            direction of {names(secondTicker)} i.e., {names(secondTicker)} and {names(firstTicker)} go up and down completely
-                            randomly.</p>
+                        {correlation &&
+                            <>
+                                <p className={styleStat.stock__name}>Correlation
+                                    between {names(firstTicker)} and {names(secondTicker)} is {correlation}</p>
+                                <p>The correlation between historical prices or returns
+                                    on {names(firstTicker)} and {names(secondTicker)} is
+                                    a relative statistical measure of the degree to which these equity instruments
+                                    tend to move together. The correlation coefficient measures the extent to which
+                                    returns on {names(secondTicker)} Class are associated (or correlated)
+                                    with {names(firstTicker)}. Values
+                                    of the correlation coefficient range from -1 to +1, where. The correlation of
+                                    zero (0) is possible when the price movement of {names(firstTicker)} has no effect
+                                    on the
+                                    direction
+                                    of {names(secondTicker)} i.e., {names(secondTicker)} and {names(firstTicker)} go up
+                                    and down completely
+                                    randomly.</p>
+                            </>
+                        }
                     </div>
                     <h4>STATISTIC FOR INDEX</h4>
                     <div className="correlationPage__form" id="form">
@@ -235,88 +262,94 @@ const Analytics = () => {
                             <label htmlFor="dateFrom">From</label>
                             <input type="date" id="dateFrom" className="text"
                                    onChange={(e) => setDateFrom2(e.target.value)}/>
-                            </div>
+                        </div>
                         <div className="input__container">
                             <label htmlFor="dateTo">To</label>
                             <input type="date" id="dateTo" className="text"
-                                       onChange={(e) => setDateTo2(e.target.value)}/>
-                            </div>
-                            <div className="input__container">
-                                <label htmlFor="stock">Stock</label>
-                                <input type="text" id="stock" placeholder="^GSPC" className="text"
-                                       onChange={(e) => setTicker(e.target.value)}/>
-                            </div>
-                            <div className="input__container">
-                                <label htmlFor="stock">deposit period days</label>
-                                <input type="number" className="text"
-                                       onChange={(e) => setDepositPeriodDays(e.target.value)}/>
-                            </div>
-                            <div className="input__container">
-                                <label htmlFor="stock">deposit summa</label>
-                                <input type="number" className="text"
-                                       onChange={(e) => setDepositSum(e.target.value)}/>
-                            </div>
-                            <button type="submit" className="button form__button correlation__button"
-                                    id="statsBtn" onClick={handleClickStatistic}>
-                                Calculate
-                            </button>
+                                   onChange={(e) => setDateTo2(e.target.value)}/>
                         </div>
+                        <div className="input__container">
+                            <label htmlFor="stock">Stock</label>
+                            <input type="text" id="stock" placeholder="^GSPC" className="text"
+                                   onChange={handleChangeTicker}/>
+                        </div>
+                        <div className="input__container">
+                            <label htmlFor="stock">deposit period days</label>
+                            <input type="number" className="text"
+                                   onChange={(e) => setDepositPeriodDays(e.target.value)}/>
+                        </div>
+                        <div className="input__container">
+                            <label htmlFor="stock">deposit summa</label>
+                            <input type="number" className="text"
+                                   onChange={(e) => setDepositSum(e.target.value)}/>
+                        </div>
+                        <button type="submit" className="button form__button correlation__button"
+                                id="statsBtn" onClick={handleClickStatistic}>
+                            Calculate
+                        </button>
+                    </div>
                     <div className={styleStat.correlation}>
-                            <h3 className={styleStat.stock__name}>{names(priceTickerForStatistic.name)}</h3>
-                            <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
-                            <div className={styleStat.price__now}>
-                                <span className={styleStat.prise}>{priceTickerForStatistic.price}</span>
-                                <span
-                                    className={priceTickerForStatistic.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatistic.change}</span>
-                                <span
-                                    className={priceTickerForStatistic.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatistic.changePersent})%</span>
-                            </div>
+                        {names(priceTickerForStatistic.name) &&
+                            <>
+                                <h3 className={styleStat.stock__name}>{names(priceTickerForStatistic.name)}</h3>
+                                <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
+                                <div className={styleStat.price__now}>
+                                    <span className={styleStat.prise}>{priceTickerForStatistic.price}</span>
+                                    <span
+                                        className={priceTickerForStatistic.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatistic.change}</span>
+                                    <span
+                                        className={priceTickerForStatistic.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatistic.changePersent})%</span>
+                                </div>
+                            </>
+                        }
                         <table className="table table-hover table-light table-statistic">
-                            <tbody>
-                            <tr>MINIMUM:</tr>
-                            <tr>
-                                <th>minPriceStart: </th>
-                                <th>{statistic.minStat?.minPriceStart} ({statistic.minStat?.minDateStart}) </th>
-                            </tr>
-                            <tr>
-                                <th>minDateEnd: </th>
-                                <th>{statistic.minStat?.minPriceEnd} ({statistic.minStat?.minDateEnd}) </th>
-                            </tr>
-                            <tr>
-                                <th>minPercentApy: </th>
-                                <th>{statistic.minStat?.minPercentApy} </th>
-                            </tr>
-                            <tr>
-                                <th>minRevenue: </th>
-                                <th>{statistic.minStat?.minRevenue} </th>
-                            </tr>
-                            <tr>MAXIMUM:</tr>
-                            <tr>
-                                <th>maxDateStart: </th>
-                                <th>{statistic.maxStat?.maxPriceStart} ({statistic.maxStat?.maxDateStart})</th>
-                            </tr>
-                            <tr>
-                                <th>maxDateEnd: </th>
-                                <th>{statistic.maxStat?.maxPriceEnd} ({statistic.maxStat?.maxDateEnd}) </th>
-                            </tr>
-                            <tr>
-                                <th>maxPercentApy: </th>
-                                <th>{statistic.maxStat?.maxPercentApy} </th>
-                            </tr>
-                            <tr>
-                                <th>maxRevenue: </th>
-                                <th>{statistic.maxStat?.maxRevenue} </th>
-                            </tr>
-                            <tr>AVERAGE:</tr>
-                            <tr>
-                                <th>avgPercent: </th>
-                                <th>{statistic.avgPercent} </th>
-                            </tr>
-                            <tr>
-                                <th>avgRevenue: </th>
-                                <th>{statistic.avgRevenue} </th>
-                            </tr>
-                            </tbody>
+                            {statistic.minStat && statistic.maxStat &&
+                                <tbody>
+                                <tr>MAXIMUM:</tr>
+                                <tr>
+                                    <th>Maximum price start:</th>
+                                    <th>{statistic.maxStat.maxPriceStart} ({statistic.maxStat.maxDateStart})</th>
+                                </tr>
+                                <tr>
+                                    <th>Maximum price end:</th>
+                                    <th>{statistic.maxStat.maxPriceEnd} ({statistic.maxStat.maxDateEnd})</th>
+                                </tr>
+                                <tr>
+                                    <th>Maximum percent APY:</th>
+                                    <th>{statistic.maxStat.maxPercentApy} </th>
+                                </tr>
+                                <tr>
+                                    <th>Maximum revenue:</th>
+                                    <th>{statistic.maxStat.maxRevenue} </th>
+                                </tr>
+                                <tr>MINIMUM:</tr>
+                                <tr>
+                                    <th>Minimum price start:</th>
+                                    <th>{statistic.minStat.minPriceStart} ({statistic.minStat.minDateStart})</th>
+                                </tr>
+                                <tr>
+                                    <th>Minimum price end:</th>
+                                    <th>{statistic.minStat.minPriceEnd} ({statistic.minStat.minDateEnd})</th>
+                                </tr>
+                                <tr>
+                                    <th>Minimum percent APY:</th>
+                                    <th>{statistic.minStat.minPercentApy} </th>
+                                </tr>
+                                <tr>
+                                    <th>Minimum revenue:</th>
+                                    <th>{statistic.minStat.minRevenue} </th>
+                                </tr>
+                                <tr>AVERAGE:</tr>
+                                <tr>
+                                    <th>Average percent:</th>
+                                    <th>{statistic.avgPercent} </th>
+                                </tr>
+                                <tr>
+                                    <th>Average revenue:</th>
+                                    <th>{statistic.avgRevenue} </th>
+                                </tr>
+                                </tbody>
+                            }
                         </table>
                     </div>
                     <h4>STATISTIC FOR INVESTMENT PORTFOLIO</h4>
@@ -353,90 +386,61 @@ const Analytics = () => {
                     </div>
                     <div className={styleStat.correlation}>
                         <div className="tickers">
-                            <div className="ticker">
-                                <h3 className={styleStat.stock__name}>{names(priceTickerForStatisticInvestmentPortfolio[0]?.name)}</h3>
-                                <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
-                                <div className={styleStat.price__now}>
-                                    <span className={styleStat.prise}>{priceTickerForStatisticInvestmentPortfolio[0]?.price}</span>
-                                    <span
-                                        className={priceTickerForStatisticInvestmentPortfolio[0]?.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatisticInvestmentPortfolio[0]?.change}</span>
-                                    <span
-                                        className={priceTickerForStatisticInvestmentPortfolio[0]?.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatisticInvestmentPortfolio[0]?.changePersent})%</span>
-                                </div>
-                            </div>
-                            <div className="ticker">
-                                <h3 className={styleStat.stock__name}>{names(priceTickerForStatisticInvestmentPortfolio[1]?.name)}</h3>
-                                <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
-                                <div className={styleStat.price__now}>
-                                    <span className={styleStat.prise}>{priceTickerForStatisticInvestmentPortfolio[1]?.price}</span>
-                                    <span
-                                        className={priceTickerForStatisticInvestmentPortfolio[1]?.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatisticInvestmentPortfolio[1]?.change}</span>
-                                    <span
-                                        className={priceTickerForStatisticInvestmentPortfolio[1]?.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatisticInvestmentPortfolio[1]?.changePersent})%</span>
-                                </div>
-                            </div>
-                            <div className="ticker">
-                                <h3 className={styleStat.stock__name}>{names(priceTickerForStatisticInvestmentPortfolio[2]?.name)}</h3>
-                                <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
-                                <div className={styleStat.price__now}>
-                                    <span className={styleStat.prise}>{priceTickerForStatisticInvestmentPortfolio[2]?.price}</span>
-                                    <span
-                                        className={priceTickerForStatisticInvestmentPortfolio[2]?.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatisticInvestmentPortfolio[2]?.change}</span>
-                                    <span
-                                        className={priceTickerForStatisticInvestmentPortfolio[2]?.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatisticInvestmentPortfolio[2]?.changePersent})%</span>
-                                </div>
-                            </div>
+                            {priceTickerForStatisticInvestmentPortfolio.map((t, i) =>
+                                <TickerForInvestmentPortfolio key={i} name={t.name} price={t.price} change={t.change} changePersent={t.changePersent}/>)}
                         </div>
-                    <table className="table table-hover table-light table-statistic">
-                        <tbody>
-                        <tr>MINIMUM:</tr>
-                        <tr>
-                            <th>minPriceStart: </th>
-                            <th>{statisticForInvestmentPortfolio.minStat?.minPriceStart} ({statisticForInvestmentPortfolio.minStat?.minDateStart}) </th>
-                        </tr>
-                        <tr>
-                            <th>minDateEnd: </th>
-                            <th>{statisticForInvestmentPortfolio.minStat?.minPriceEnd} ({statisticForInvestmentPortfolio.minStat?.minDateEnd}) </th>
-                        </tr>
-                        <tr>
-                            <th>minPercentApy: </th>
-                            <th>{statisticForInvestmentPortfolio.minStat?.minPercentApy} </th>
-                        </tr>
-                        <tr>
-                            <th>minRevenue: </th>
-                            <th>{statisticForInvestmentPortfolio.minStat?.minRevenue} </th>
-                        </tr>
-                        <tr>MAXIMUM:</tr>
-                        <tr>
-                            <th>maxDateStart: </th>
-                            <th>{statisticForInvestmentPortfolio.maxStat?.maxPriceStart} ({statisticForInvestmentPortfolio.maxStat?.maxDateStart})</th>
-                        </tr>
-                        <tr>
-                            <th>maxDateEnd: </th>
-                            <th>{statisticForInvestmentPortfolio.maxStat?.maxPriceEnd} ({statisticForInvestmentPortfolio.maxStat?.maxDateEnd}) </th>
-                        </tr>
-                        <tr>
-                            <th>maxPercentApy: </th>
-                            <th>{statisticForInvestmentPortfolio.maxStat?.maxPercentApy} </th>
-                        </tr>
-                        <tr>
-                            <th>maxRevenue: </th>
-                            <th>{statisticForInvestmentPortfolio.maxStat?.maxRevenue} </th>
-                        </tr>
-                        <tr>AVERAGE:</tr>
-                        <tr>
-                            <th>avgPercent: </th>
-                            <th>{statisticForInvestmentPortfolio.avgPercent} </th>
-                        </tr>
-                        <tr>
-                            <th>avgRevenue: </th>
-                            <th>{statisticForInvestmentPortfolio.avgRevenue} </th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    {/*<div className="correlation__chart">*/}
-                    {/*</div>*/}
-                </div>
+                        <table className="table table-hover table-light table-statistic">
+                            {statisticForInvestmentPortfolio.minStat && statisticForInvestmentPortfolio.maxStat &&
+                                <tbody>
+                                <tr>MAXIMUM:</tr>
+                                <tr>
+                                    <th>Maximum price start:</th>
+                                    <th>{statisticForInvestmentPortfolio.maxStat.maxPriceStart} ({statisticForInvestmentPortfolio.maxStat.maxDateStart})</th>
+                                </tr>
+                                <tr>
+                                    <th>Maximum price end:</th>
+                                    <th>{statisticForInvestmentPortfolio.maxStat.maxPriceEnd} ({statisticForInvestmentPortfolio.maxStat.maxDateEnd})</th>
+                                </tr>
+                                <tr>
+                                    <th>Maximum percent APY:</th>
+                                    <th>{statisticForInvestmentPortfolio.maxStat.maxPercentApy} </th>
+                                </tr>
+                                <tr>
+                                    <th>Maximum revenue:</th>
+                                    <th>{statisticForInvestmentPortfolio.maxStat.maxRevenue} </th>
+                                </tr>
+                                <tr>MINIMUM:</tr>
+                                <tr>
+                                    <th>Minimum price start:</th>
+                                    <th>{statisticForInvestmentPortfolio.minStat.minPriceStart} ({statisticForInvestmentPortfolio.minStat.minDateStart})</th>
+                                </tr>
+                                <tr>
+                                    <th>Minimum price end:</th>
+                                    <th>{statisticForInvestmentPortfolio.minStat.minPriceEnd} ({statisticForInvestmentPortfolio.minStat.minDateEnd})</th>
+                                </tr>
+                                <tr>
+                                    <th>Minimum percent APY:</th>
+                                    <th>{statisticForInvestmentPortfolio.minStat.minPercentApy} </th>
+                                </tr>
+                                <tr>
+                                    <th>Minimum revenue:</th>
+                                    <th>{statisticForInvestmentPortfolio.minStat.minRevenue} </th>
+                                </tr>
+                                <tr>AVERAGE:</tr>
+                                <tr>
+                                    <th>Average percent:</th>
+                                    <th>{statisticForInvestmentPortfolio.avgPercent} </th>
+                                </tr>
+                                <tr>
+                                    <th>Average revenue:</th>
+                                    <th>{statisticForInvestmentPortfolio.avgRevenue} </th>
+                                </tr>
+                                </tbody>
+                            }
+                        </table>
+                        {/*<div className="correlation__chart">*/}
+                        {/*</div>*/}
+                    </div>
                 </div>
                 <div className="page-analytics__sideBar">
                     <div className={styleStat.stock__info}>
@@ -449,8 +453,8 @@ const Analytics = () => {
                             <span
                                 className={priceFirstTicker.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceFirstTicker.changePersent})%</span>
                         </div>
-                        <p className="min_prise">Min.price: {minMaxPricesFirstTicker.min}</p>
-                        <p className="min_prise">Max.price: {minMaxPricesFirstTicker.max}</p>
+                        <p>High/low for 52 week</p>
+                        <p className="fw-bold">{minMaxPricesFirstTicker.max} / {minMaxPricesFirstTicker.min}</p>
                     </div>
 
                     <div className={styleStat.stock__info}>
@@ -463,8 +467,8 @@ const Analytics = () => {
                             <span
                                 className={priceSecondTicker.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceSecondTicker.changePersent})%</span>
 
-                            <p className="min_prise">Min.price: {minMaxPricesSecondTicker.min}</p>
-                            <p className="min_prise">Max.price: {minMaxPricesSecondTicker.max}</p>
+                            <p>High/low for 52 week</p>
+                            <p className="fw-bold">{minMaxPricesSecondTicker.max} / {minMaxPricesSecondTicker.min}</p>
                         </div>
                     </div>
                 </div>

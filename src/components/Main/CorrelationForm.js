@@ -54,7 +54,7 @@ const CorrelationForm = () => {
                 <input type="text" id="stock2" placeholder="S&P500" className="text"
                 onChange={handleChangeSecondTicker}/>
             </div>
-            <button type="submit" className="button form__button">Calculate</button>
+            <button type="submit" className="button">Calculate</button>
         </form>
     );
 };
