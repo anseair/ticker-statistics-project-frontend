@@ -1,21 +1,21 @@
 import React, {useState} from 'react';
-import {navItems} from "../../utils/constants";
+import {createToken, navItems} from "../../utils/constants";
 import NavItem from "./NavItem";
 import '../../CSS/header.css'
-import Login from "../Main/Login";
-import Register from "../Main/Register";
+import Login from "../Main/Account/Login";
+import Register from "../Main/Account/Register";
 import {Link} from "react-router-dom";
 import {deleteToken} from "../../slices/tokenSlice";
 import {deleteUser} from "../../slices/userSlice";
 import {useDispatch, useSelector} from "react-redux";
-import Profile from "../Main/Profile";
+import Profile from "../Main/Account/Profile";
+import {fetchUser} from "../../actions/accoutAction";
 
 const Navigation = () => {
     const {login} = useSelector(state => state.user);
-
     const token = useSelector(state => state.token);
-
     const dispatch = useDispatch();
+
     const handleClickLogout = () => {
         dispatch(deleteToken());
         dispatch(deleteUser());
@@ -36,15 +36,15 @@ const Navigation = () => {
                 </ul>
                 <div className="dropdown">
                     {token &&
-                        <button className="button form__button correlation__button">
+                        <Link className="link button form__button" to={"profile"}>
                             {token ? `${login}` : 'Sing In'}
                             <div className="dropdown-content">
                                 <Link to={"guest"} onClick={handleClickLogout}>LOG OUT</Link>
                             </div>
-                        </button>
+                        </Link>
                     }
                     {!token &&
-                        <Link className="link button form__button correlation__button" to={"guest"}>Sing in</Link>
+                        <Link className="link button form__button" to={"guest"}>Sing in</Link>
                     }
                 </div>
             </div>

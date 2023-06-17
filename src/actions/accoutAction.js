@@ -1,12 +1,11 @@
-import {putUser} from "../slices/userSlice";
+import {errorUser, putUser} from "../slices/userSlice";
 import {putToken} from "../slices/tokenSlice";
 import {baseUrl, createToken} from "../utils/constants";
+
 export const fetchRegisterUser = (user) => {
     return async (dispatch) => {
         const response = await fetch(`${baseUrl}/account/register`, {
-            method: 'Post',
-            body: JSON.stringify(user),
-            headers: {
+            method: 'Post', body: JSON.stringify(user), headers: {
                 'Content-Type': 'application/json'
             }
         });
@@ -22,17 +21,18 @@ export const fetchRegisterUser = (user) => {
 export const fetchUser = (token) => {
     return async (dispatch) => {
         const response = await fetch(`${baseUrl}/account/login`, {
-            method: 'Post',
-            headers: {
+            method: 'Post', headers: {
                 'Authorization': token
             }
         });
         if (response.ok) {
             const data = await response.json();
-            console.log(data)
             dispatch(putUser(data));
             dispatch(putToken(token));
+            localStorage.setItem('token', token);
+
         } else {
+            dispatch(errorUser('Invalid password or login. Please try again or click on the "Forgot your password?" link to reset it.'))
             throw new Error(response.status.toString());
         }
     }
@@ -40,16 +40,15 @@ export const fetchUser = (token) => {
 
 export const fetchUpdateUser = (firstName, lastName) => {
     return async (dispatch, getState) => {
+        console.log(getState().token)
         const response = await fetch(`${baseUrl}/user/`, {
-            method: 'Put',
-            body: JSON.stringify({firstName, lastName}),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': getState().token
+            method: 'Put', body: JSON.stringify(firstName, lastName), headers: {
+                'Content-Type': 'application/json', 'Authorization': getState().token
             }
         });
         if (response.ok) {
             const data = await response.json();
+            console.log(data)
             dispatch(putUser(data));
         } else {
             throw new Error(response.status.toString());
@@ -59,10 +58,8 @@ export const fetchUpdateUser = (firstName, lastName) => {
 export const fetchChangePassword = (password) => {
     return async (dispatch, getState) => {
         const response = await fetch(`${baseUrl}/user/password`, {
-            method: 'Put',
-            headers: {
-                'Authorization': getState().token,
-                'X-Password': password
+            method: 'Put', headers: {
+                'Authorization': getState().token, 'X-Password': password
             }
         });
         if (response.ok) {

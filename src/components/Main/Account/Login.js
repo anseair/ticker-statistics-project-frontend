@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
-import {createToken} from "../../utils/constants";
-import {fetchUser} from "../../actions/accoutAction";
-import {useDispatch} from "react-redux";
-import '../../CSS/account.css'
-
-
-import Register from "./Register";
+import {createToken} from "../../../utils/constants";
+import {fetchUser} from "../../../actions/accoutAction";
+import {useDispatch, useSelector} from "react-redux";
+import '../../../CSS/account.css'
 
 const Login = () => {
+    const {message} = useSelector(store => store.user);
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
@@ -30,7 +28,10 @@ const Login = () => {
                     <input type="password" id="password" placeholder="Your password" required className="text"
                            onChange={e => setPassword(e.target.value.trim())} value={password}/>
                 </div>
-                <button className="button w-100" onClick={handleClickLogin}>Log in</button>
+                {message &&
+                    <p>{message}</p>
+                }
+                <button className="button form__button w-100" onClick={handleClickLogin}>Log in</button>
             </div>
         </>
     );

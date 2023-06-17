@@ -92,27 +92,51 @@ export const fetchPriceTickerForStatisticInvestmentPortfolio = (tickers) => {
     }
 }
 
-export const fetchPrice = (tickers) => {
+export const fetchPrice = () => {
     return async (dispatch) => {
         dispatch(pendingPrices('Pending'));
+        const response = await fetch(`${baseUrl}/financials/lastPrices`);
+        const data = await response.json();
         const res = [];
-        const response = []
-        for(let i = 0; i < tickers.length; i++){
-            response.push(await
-                fetch(`${baseUrl}/financials/ticker/${tickers[i]}`)
-            );
-        }
-            const data = await Promise.all(response.map(r => r.json()));
-            data.map(data => {
-                const info = {
-                    name: data.date.name,
-                    price: (data.priceClose).toFixed(2),
-                    change: (data.change).toFixed(2),
-                    changePersent: (data.changePersent).toFixed(2)
-                }
-                res.push(info);
-            })
-            dispatch(putPrice(res));
-            dispatch(pendingPrices('Done'))
+
+        data.map(data => {
+            const info = {
+                name: data.date.name,
+                price: (data.priceClose).toFixed(2),
+                change: (data.change).toFixed(2),
+                changePersent: (data.changePersent).toFixed(2),
+                max: (data.maxPrice).toFixed(2),
+                min: (data.minPrice).toFixed(2)
+            }
+            res.push(info);
+        })
+        localStorage.setItem('pricesAll', JSON.stringify(res));
+        dispatch(putPrice(res));
+        dispatch(pendingPrices('Done'))
     }
 }
+
+// export const fetchPrice = (tickers) => {
+//     return async (dispatch) => {
+//         dispatch(pendingPrices('Pending'));
+//         const res = [];
+//         const response = []
+//         for(let i = 0; i < tickers.length; i++){
+//             response.push(await
+//                 fetch(`${baseUrl}/financials/ticker/${tickers[i]}`)
+//             );
+//         }
+//             const data = await Promise.all(response.map(r => r.json()));
+//             data.map(data => {
+//                 const info = {
+//                     name: data.date.name,
+//                     price: (data.priceClose).toFixed(2),
+//                     change: (data.change).toFixed(2),
+//                     changePersent: (data.changePersent).toFixed(2)
+//                 }
+//                 res.push(info);
+//             })
+//             dispatch(putPrice(res));
+//             dispatch(pendingPrices('Done'))
+//     }
+// }

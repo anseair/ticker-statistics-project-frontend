@@ -22,6 +22,13 @@
 .dropdown-content a:hover {background-color: #f1f1f1;}
 .dropdown:hover .dropdown-content {display: block;}
 
+.switchLoginRegister{
+    padding: 4px 15px;
+    border-radius: 3px;
+    margin: 12px auto;
+    display: block;
+}
+
 .account__form {
     width: 300px;
     margin: 30px auto;
@@ -65,50 +72,28 @@
     text-align: center;
 }
 
-.account .button {
-    background-color: #7a1212;
-    border: 1px solid #7a1212;
-    padding: 4px 15px;
-    margin: 5px 0;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 18px;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
-    -webkit-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
-    -moz-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
-}
-
-.account button:hover {
-    background-color: #3e4953;
-    border: 1px solid #3e4953;
-}
-
-.switchLoginRegister{
-    padding: 4px 15px;
-    border-radius: 3px;
-    margin: 12px auto;
-    display: block;
-}
-
 .account p {
     color: black;
     text-align: center;
 }
 
-.profile p {
-    color: black;
-    font-size: 1.5em;
-}
-.profile ul {
-    color: black;
-    font-size: 1.5em;
+.account label {
+    position: absolute;
+    top: -15px;
+    left: 3px;
+    font-size: 12px;
+    color: #00000085;
 }
 
-.profile li {
+.profile {
+    width: 400px;
     color: black;
-    font-size: 1em;
+    padding: 10px 20px;
+    border: 1px solid #b5a8a875;
+    background-color: #f2f2f2;
+    border-radius: 3px;
+    margin: 30px 20px;
+    text-align: left;
 }
 
 .profile__form {
@@ -127,45 +112,11 @@
     width: 100%;
 }
 
-.account label {
-    position: absolute;
-    top: -15px;
-    left: 3px;
-    font-size: 12px;
-    color: #00000085;
-}
-
 .profile .input__container:not(:last-child) {
     margin-right: 0;
     margin-bottom: 30px;
 }
 
-.profile h4 {
-    font-family: 'Merriweather', serif;
-    font-size: 23px;
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-.profile .button {
-    background-color: #7a1212;
-    border: 1px solid #7a1212;
-    padding: 4px 15px;
-    margin: 5px 0;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 18px;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
-    -webkit-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
-    -moz-box-shadow: 3px 3px 8px -1px rgba(0, 0, 0, 0.87);
-}
-
-.profile button:hover {
-    background-color: #3e4953;
-    border: 1px solid #3e4953;
-}
 
 .profile h4 {
     font-family: 'Merriweather', serif;
@@ -181,4 +132,21 @@
     font-size: 12px;
     color: #00000085;
 }
+
+.profile__select{
+    border: none;
+    margin: 0;
+    padding: 0;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.profile p {
+    margin: 5px 0 ;
+}
+
+.profile ul {
+    margin: 5px 0 ;
+}
+
 

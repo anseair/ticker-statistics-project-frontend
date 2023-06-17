@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {fetchChangePassword} from "../../actions/accoutAction";
+import {fetchChangePassword} from "../../../actions/accoutAction";
 
 const ChangePassword = ({close}) => {
     const [password, setPassword] = useState('');
@@ -23,13 +23,11 @@ const ChangePassword = ({close}) => {
 
     return (
         <div className="profile__form">
-            <h4>Change password</h4>
             <div className="input__container">
                 <label htmlFor="password">Old password:</label>
                 <input type="password" id="password" placeholder="Your old password" className="text"
                        onChange={e => setPassword(e.target.value.trim())} value={password}/>
             </div>
-
             <div className="input__container">
                 <label htmlFor="newPassword">New password:</label>
                 <input type="password" id="newPassword" placeholder="Your new password" className="text"
@@ -40,9 +38,9 @@ const ChangePassword = ({close}) => {
                 <input type="password" id="repeatNewPassword" placeholder="Your new password" className="text"
                        onChange={e => setNewPassword2(e.target.value.trim())} value={newPassword2}/>
             </div>
-            <button className="button w-100" onClick={handleClickSave}>Save and Close</button>
-            <button className="button w-100" onClick={handleClickClear}>Clear</button>
-            <button className="button w-100" onClick={close}>Close without Save</button>
+            <button className="button w-30 m-1" onClick={handleClickClear}>Clear</button>
+            <button className="button w-30 m-1" onClick={handleClickSave}>Save</button>
+            <button className="button w-30 m-1" onClick={close}>Cancel</button>
         </div>
     );
 };

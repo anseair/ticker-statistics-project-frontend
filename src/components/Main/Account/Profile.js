@@ -1,6 +1,5 @@
 import ProfileData from "./ProfileData";
 import React from "react";
-import {UpdateUser} from "./UpdateUser";
 
 const Profile = () => {
     return (
@@ -12,7 +11,6 @@ const Profile = () => {
             </section>
             <section className="profile">
                 <ProfileData/>
-                <UpdateUser/>
             </section>
         </>
     );

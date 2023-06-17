@@ -17,46 +17,59 @@ import {
 import {fetchAllPricesMainTicker, fetchAllPricesMainTickerForFiveDays} from "../../actions/allPricesForDiagramAction";
 import moment from 'moment';
 import {dateStr, names, randomNum} from "../../utils/constants";
+import navItem from "../Header/NavItem";
 
 const Statistics = () => {
     const {tickers} = useSelector(state => state.tickers);
-    const {priceMainTicker, pricesAll, text} = useSelector(state => state.prices);
-    const {minMaxPricesMainTicker, minMaxPricesMainTickerForPeriod} = useSelector(state => state.minMaxPrice);
+    const {text} = useSelector(state => state.prices);
+    const {minMaxPricesMainTickerForPeriod} = useSelector(state => state.minMaxPrice);
     const {allPricesMainTicker} = useSelector(state => state.allPricesForDiagram);
     const dispatch = useDispatch();
 
     const [ticker, setTicker] = useState('');
+    const [mainTicker, setMainTicker] = useState();
+    const [randomTickers, setRandomTickers] = useState();
+    const [allPrices, setAllPrices] = useState();
+
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     // const [dateFromDiagram, setDateFromDiagram] = useState('');
     // const [dateNow, setDateNow] = useState('');
 
     useEffect(() => {
-        if (localStorage.getItem('mainTicker')) {
-            const ticker1 = localStorage.getItem('mainTicker');
-            setTicker(ticker1);
-            dispatch(fetchPriceMainTicker(ticker1));
-            dispatch(fetchMinMaxPriceMainTicker(ticker1));
-            dispatch(fetchAllPricesMainTickerForFiveDays(ticker1));
+        const tickerName = localStorage.getItem('tickerName');
+        const tickerMain = localStorage.getItem('mainTicker');
+        const pricesAll = JSON.parse(localStorage.getItem('pricesAll'));
+        setAllPrices(pricesAll);
+        if (pricesAll) {
+            if (tickerName || tickerMain) {
+                setTicker(tickerName);
+                setMainTicker(tickerMain);
+                dispatch(fetchAllPricesMainTickerForFiveDays(ticker));
+            }
+            const ticker2 = pricesAll.map(item => item).filter(item => item.name === tickerName);
+            localStorage.setItem('mainTicker', JSON.stringify(ticker2[0]))
+            setMainTicker(ticker2[0]);
         }
+        dispatch(fetchPrice());
         dispatch(fetchTickers());
-        const randomTickers = randomNum(tickers);
-        randomTickers.splice(randomTickers.indexOf(ticker), 1);
-        dispatch(fetchPrice(randomTickers));
-        dispatch(fetchAllPricesMainTickerForFiveDays(ticker));
+        const randomTickers1 = randomNum(pricesAll);
+        randomTickers1.splice(randomTickers1.findIndex(t=> t.name === ticker), 1);
+        setRandomTickers(randomTickers1);
     }, [tickers[0]]);
 
     const handleChange = (e) => {
         const ticker = e.target.value;
-        localStorage.setItem('mainTicker', ticker)
+        localStorage.setItem('tickerName',ticker)
         setTicker(ticker);
-        dispatch(fetchPriceMainTicker(ticker));
 
-        const randomTickers = randomNum(tickers);
-        randomTickers.splice(randomTickers.indexOf(ticker), 1);
-        dispatch(fetchPrice(randomTickers));
+        const ticker2 = allPrices.map(item => item).filter(item => item.name === ticker);
+        localStorage.setItem('mainTicker', JSON.stringify(ticker2[0]))
+        setMainTicker(ticker2[0]);
 
-        dispatch(fetchMinMaxPriceMainTicker(ticker));
+        const randomTickers1 = randomNum(allPrices);
+        randomTickers1.splice(randomTickers1.findIndex(t=> t.name === ticker), 1);
+        setRandomTickers(randomTickers1);
         dispatch(fetchAllPricesMainTickerForFiveDays(ticker));
     }
 
@@ -126,6 +139,7 @@ const Statistics = () => {
                 <div className="page__container">
                     <h1 className="page__title">Statistics</h1></div>
             </section>
+
             <section className="page-statistic">
                 <section className="page-statistic__main">
                     <button className="btnPeriod ps-5"
@@ -160,7 +174,7 @@ const Statistics = () => {
                         <XAxis dataKey="date" xAxisId={"price"} interval={allPricesMainTicker.length < 6 ? 0 :
                             allPricesMainTicker.length < 25 ? 3 : allPricesMainTicker.length < 400 ? 30 :
                                 allPricesMainTicker.length < 900 ? 100 : allPricesMainTicker.length < 2000 ? 400 :
-                                allPricesMainTicker.length < 2600 ? 700 : 1000} axisLine={false}
+                                    allPricesMainTicker.length < 2600 ? 700 : 1000} axisLine={false}
                                tickFormatter={allPricesMainTicker.length < 25 ? ((tickItem) => moment(tickItem).format("D MMM.")) :
                                    allPricesMainTicker.length < 2600 ? ((tickItem) => moment(tickItem).format("MMM. YYYY")) :
                                        ((tickItem) => moment(tickItem).format("YYYY"))}
@@ -173,6 +187,7 @@ const Statistics = () => {
                         />
                         <CartesianGrid vertical={false} strokeWidth="0.5"/>
                         <Tooltip content={<CustomTooltip/>}/>
+                        {ticker &&
                         <Legend
                             payload={[
                                 {
@@ -182,29 +197,33 @@ const Statistics = () => {
                                 },
                             ]}
                             verticalAlign="bottom" align={"center"} height={36} ic/>
-
+                        }
                     </AreaChart>
                 </section>
                 <section className="page-statistic__sideBar">
                     <div className={styleStat.stock__info}>
                         <select className="form-select" onChange={handleChange} value={ticker}>
                             <option value='' disabled hidden>Select ticker</option>
-                            {tickers.map((text) => {
-                                    return <option key={text} value={text}>{text}</option>
+                            {tickers.map((t) => {
+                                    return <option key={t} value={t}>{t}</option>
                                 }
                             )}
                         </select>
-                        <h3 className={styleStat.stock__name}>{names(ticker)}</h3>
+                        {mainTicker &&
+                            <>
+                        <h3 className={styleStat.stock__name}>{names(mainTicker.name)}</h3>
                         <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
-                        <div className={styleStat.price__now}>
-                            <span className={styleStat.prise}>{priceMainTicker.price}</span>
-                            <span
-                                className={priceMainTicker.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceMainTicker.change}</span>
-                            <span
-                                className={priceMainTicker.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceMainTicker.changePersent})%</span>
-                        </div>
-                        <p>High/low for 52 week</p>
-                        <p className="fw-bold">{minMaxPricesMainTicker.max} / {minMaxPricesMainTicker.min}</p>
+                                <div className={styleStat.price__now}>
+                                    <span className={styleStat.prise}>{mainTicker.price}</span>
+                                    <span
+                                        className={mainTicker.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{mainTicker.change}</span>
+                                    <span
+                                        className={mainTicker.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({mainTicker.changePersent})%</span>
+                                </div>
+                                <p>High/low for 52 week</p>
+                                <p className="fw-bold">{mainTicker.max} / {mainTicker.min}</p>
+                            </>
+                        }
                         <div className="period">
                             <div className="date__container">
                                 <div className="input__container">
@@ -231,50 +250,50 @@ const Statistics = () => {
 
                     </div>
 
-                        <div className="page-statistic__table">
+                    <div className="page-statistic__table">
                         <h5>Today's Price Fluctuations</h5>
-                            {text == 'Pending'
-                                ?
-                                <div className='spinner-border text-primary'></div>
-                                :
-                        <table className="table table-hover table-light">
-                            <thead>
-                            <tr>
-                                <th className={styleStat.stock} scope="col">Stocks</th>
-                                <th className={styleStat.stock} scope="col">Last</th>
-                                <th className={styleStat.stock} scope="col">Change</th>
-                                <th className={styleStat.stock} scope="col">% Change</th>
-                            </tr>
-                            </thead>
-                            {pricesAll[0] &&
-                                <tbody>
+                        {text == 'Pending'
+                            ?
+                            <div className='spinner-border text-primary'></div>
+                            :
+                            <table className="table table-hover table-light">
+                                <thead>
                                 <tr>
-                                    <th className={styleStat.stock} scope="row">{pricesAll[0].name}</th>
-                                    <td>{pricesAll[0].price}</td>
-                                    <td className={pricesAll[0].change < 0 ? styleStat.red : styleStat.green}>{pricesAll[0].change}</td>
-                                    <td className={pricesAll[0].changePersent < 0 ? styleStat.red : styleStat.green}>({pricesAll[0].changePersent})%</td>
+                                    <th className={styleStat.stock} scope="col">Stocks</th>
+                                    <th className={styleStat.stock} scope="col">Last</th>
+                                    <th className={styleStat.stock} scope="col">Change</th>
+                                    <th className={styleStat.stock} scope="col">% Change</th>
                                 </tr>
-                                <tr>
-                                    <th className={styleStat.stock} scope="row">{pricesAll[1].name}</th>
-                                    <td>{pricesAll[1].price}</td>
-                                    <td className={pricesAll[1].change < 0 ? styleStat.red : styleStat.green}>{pricesAll[1].change}</td>
-                                    <td className={pricesAll[1].changePersent < 0 ? styleStat.red : styleStat.green}>({pricesAll[1].changePersent})%</td>
-                                </tr>
-                                <tr>
-                                    <th className={styleStat.stock} scope="row">{pricesAll[2].name}</th>
-                                    <td>{pricesAll[2].price}</td>
-                                    <td className={pricesAll[2].change < 0 ? styleStat.red : styleStat.green}>{pricesAll[2].change}</td>
-                                    <td className={pricesAll[2].changePersent < 0 ? styleStat.red : styleStat.green}>({pricesAll[2].changePersent})%</td>
-                                </tr>
-                                <tr>
-                                    <th className={styleStat.stock} scope="row">{pricesAll[3].name}</th>
-                                    <td>{pricesAll[3].price}</td>
-                                    <td className={pricesAll[3].change < 0 ? styleStat.red : styleStat.green}>{pricesAll[3].change}</td>
-                                    <td className={pricesAll[3].changePersent < 0 ? styleStat.red : styleStat.green}>({pricesAll[3].changePersent})%</td>
-                                </tr>
-                                </tbody>
-                            }
-                        </table>
+                                </thead>
+                                {randomTickers &&
+                                    <tbody>
+                                    <tr>
+                                        <th className={styleStat.stock} scope="row">{randomTickers[0].name}</th>
+                                        <td>{randomTickers[0].price}</td>
+                                        <td className={randomTickers[0].change < 0 ? styleStat.red : styleStat.green}>{randomTickers[0].change}</td>
+                                        <td className={randomTickers[0].changePersent < 0 ? styleStat.red : styleStat.green}>({randomTickers[0].changePersent})%</td>
+                                    </tr>
+                                    <tr>
+                                        <th className={styleStat.stock} scope="row">{randomTickers[1].name}</th>
+                                        <td>{randomTickers[1].price}</td>
+                                        <td className={randomTickers[1].change < 0 ? styleStat.red : styleStat.green}>{randomTickers[1].change}</td>
+                                        <td className={randomTickers[1].changePersent < 0 ? styleStat.red : styleStat.green}>({randomTickers[1].changePersent})%</td>
+                                    </tr>
+                                    <tr>
+                                        <th className={styleStat.stock} scope="row">{randomTickers[2].name}</th>
+                                        <td>{randomTickers[2].price}</td>
+                                        <td className={randomTickers[2].change < 0 ? styleStat.red : styleStat.green}>{randomTickers[2].change}</td>
+                                        <td className={randomTickers[2].changePersent < 0 ? styleStat.red : styleStat.green}>({randomTickers[2].changePersent})%</td>
+                                    </tr>
+                                    <tr>
+                                        <th className={styleStat.stock} scope="row">{randomTickers[3].name}</th>
+                                        <td>{randomTickers[3].price}</td>
+                                        <td className={randomTickers[3].change < 0 ? styleStat.red : styleStat.green}>{randomTickers[3].change}</td>
+                                        <td className={randomTickers[3].changePersent < 0 ? styleStat.red : styleStat.green}>({randomTickers[3].changePersent})%</td>
+                                    </tr>
+                                    </tbody>
+                                }
+                            </table>
                         }
                     </div>
                 </section>

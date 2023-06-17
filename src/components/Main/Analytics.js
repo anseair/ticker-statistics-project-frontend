@@ -4,16 +4,7 @@ import '../../CSS/correlation.css'
 import '../../CSS/statistics.css'
 import styleStat from '../../CSS/stat.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {
-    fetchPriceFirstTicker,
-    fetchPriceTickerForStatistic,
-    fetchPriceTickerForStatisticInvestmentPortfolio,
-    fetchPriceSecondTicker
-} from "../../actions/priceAction";
-import {
-    fetchMinMaxPriceFirstTicker,
-    fetchMinMaxPriceSecondTicker
-} from "../../actions/minMaxPriceAction";
+
 import {fetchCorrelation} from "../../actions/correlationAction";
 import {fetchStatistic, fetchStatisticForInvestmentPortfolio} from "../../actions/statisticAction";
 import {CartesianGrid, Label, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
@@ -26,15 +17,6 @@ import {names} from "../../utils/constants";
 import TickerForInvestmentPortfolio from "./TickerForInvestmentPortfolio";
 
 const Analytics = () => {
-
-    const {
-        priceFirstTicker,
-        priceSecondTicker,
-        priceTickerForStatistic,
-        priceTickerForStatisticInvestmentPortfolio
-    } = useSelector(state => state.prices);
-
-    const {minMaxPricesFirstTicker, minMaxPricesSecondTicker} = useSelector(state => state.minMaxPrice);
     const {correlation} = useSelector(state => state.correlation);
     const {statistic, statisticForInvestmentPortfolio} = useSelector(state => state.statisticInfo);
     const {allPricesFirstTicker, allPricesSecondTicker} = useSelector(state => state.allPricesForDiagram);
@@ -42,54 +24,64 @@ const Analytics = () => {
 
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
+
     const [firstTicker, setFirstTicker] = useState('');
     const [secondTicker, setSecondTicker] = useState('');
+    const [firstTicker1, setFirstTicker1] = useState();
+    const [secondTicker1, setSecondTicker1] = useState();
+    const [allPrices, setAllPrices] = useState();
 
     const [ticker, setTicker] = useState('');
+    const [ticker1, setTicker1] = useState();
+
     const [dateFrom2, setDateFrom2] = useState('');
     const [dateTo2, setDateTo2] = useState('');
     const [depositPeriodDays, setDepositPeriodDays] = useState('');
     const [depositSum, setDepositSum] = useState('');
 
-    const [tickers, setTickers] = useState([]);
+    const [tickers, setTickers] = useState();
+    const [tickers1, setTickers1] = useState();
+
     const [dateFrom3, setDateFrom3] = useState('');
     const [dateTo3, setDateTo3] = useState('');
     const [depositPeriodDays2, setDepositPeriodDays2] = useState('');
     const [depositSum2, setDepositSum2] = useState('');
 
     useEffect(() => {
-        if (localStorage.getItem('firstTicker')) {
-            const firstTicker1 = localStorage.getItem('firstTicker');
-            setFirstTicker(firstTicker1);
-            dispatch(fetchPriceFirstTicker(firstTicker1));
-            dispatch(fetchMinMaxPriceFirstTicker(firstTicker1));
+        const pricesAll = JSON.parse(localStorage.getItem('pricesAll'));
+        setAllPrices(pricesAll);
 
-        }
-        if (localStorage.getItem('secondTicker')) {
-            const secondTicker1 = localStorage.getItem('secondTicker');
-            setSecondTicker(secondTicker1);
-            dispatch(fetchPriceSecondTicker(secondTicker1));
-            dispatch(fetchMinMaxPriceSecondTicker(secondTicker1));
-        }
-
+        // const tickerFirst = localStorage.getItem('firstTicker');
+        // const tickerSecond = localStorage.getItem('secondTicker');
+        // const tickerFirstName = localStorage.getItem('firstTickerName');
+        // const tickerSecondName = localStorage.getItem('secondTickerName');
+        // if (pricesAll) {
+        //     if (tickerFirst || tickerFirstName) {
+        //         setFirstTicker(tickerFirstName);
+        //         setFirstTicker1(tickerFirst)
+        //     }
+        //     const ticker1 = pricesAll.map(item => item).filter(item => item.name === tickerFirstName);
+        //     localStorage.setItem('firstTicker', JSON.stringify(ticker1[0]))
+        //     setFirstTicker1(ticker1[0])
+        //     if (tickerSecond || tickerSecondName) {
+        //         setSecondTicker(tickerSecondName);
+        //         setSecondTicker1(tickerSecond)
+        //     }
+        //     const ticker2 = pricesAll.map(item => item).filter(item => item.name === tickerSecondName);
+        //     localStorage.setItem('secondTicker', JSON.stringify(ticker2[0]))
+        //     setSecondTicker1(ticker2[0])
+        // }
     }, [])
 
     const handleChangeFirstTicker = (e) => {
         const firstTicker = e.target.value;
-        localStorage.setItem('firstTicker', firstTicker);
         setFirstTicker(firstTicker);
-        dispatch(fetchPriceFirstTicker(firstTicker));
-        dispatch(fetchMinMaxPriceFirstTicker(firstTicker));
     }
 
     const handleChangeSecondTicker = (e) => {
         const secondTicker = e.target.value;
-        localStorage.setItem('secondTicker', secondTicker);
         setSecondTicker(secondTicker);
-        dispatch(fetchPriceSecondTicker(secondTicker));
-        dispatch(fetchMinMaxPriceSecondTicker(secondTicker));
     }
-
 
     const handleChangeDateFrom = (e) => {
         const dateFrom = e.target.value;
@@ -102,6 +94,10 @@ const Analytics = () => {
     }
 
     const handleClickCorrelation = () => {
+        const ticker1 = allPrices.map(item => item).filter(item => item.name === firstTicker);
+        setFirstTicker1(ticker1[0]);
+        const ticker2 = allPrices.map(item => item).filter(item => item.name === secondTicker);
+        setSecondTicker1(ticker2[0]);
         dispatch(fetchCorrelation(firstTicker, secondTicker, dateFrom, dateTo));
         dispatch(fetchAllPricesFirstTicker(firstTicker, dateFrom, dateTo));
         dispatch(fetchAllPricesSecondTicker(secondTicker, dateFrom, dateTo));
@@ -113,7 +109,8 @@ const Analytics = () => {
     }
 
     const handleClickStatistic = () => {
-        dispatch(fetchPriceTickerForStatistic(ticker));
+        const ticker2= allPrices.map(item => item).filter(item => item.name === ticker);
+        setTicker1(ticker2[0]);
         dispatch(fetchStatistic(ticker, dateFrom2, dateTo2, depositPeriodDays, depositSum));
     }
 
@@ -123,7 +120,12 @@ const Analytics = () => {
     }
 
     const handleClickStatisticForInvestmentPortfolio = () => {
-        dispatch(fetchPriceTickerForStatisticInvestmentPortfolio(tickers));
+        const tickers2 = [];
+        for (let i = 0; i < tickers.length; i++) {
+            const ticker2 = allPrices.map(item => item).filter(item => item.name === tickers[i]);
+            tickers2.push(ticker2[0]);
+        }
+        setTickers1(tickers2);
         dispatch(fetchStatisticForInvestmentPortfolio(tickers, dateFrom3, dateTo3, depositPeriodDays2, depositSum2));
     }
 
@@ -132,8 +134,8 @@ const Analytics = () => {
             return (
                 <div className="custom-tooltip">
                     <p className="text">{`${payload[0].payload.date}`}</p>
-                    <p className="text">{`${firstTicker}: ${payload[0].value}`}</p>
-                    <p className="text">{`${secondTicker}: ${payload[1].value}`}</p>
+                    <p className="text">{`${firstTicker}: ${payload[0].payload.value}`}</p>
+                    <p className="text">{`${secondTicker}: ${payload[1].payload.value}`}</p>
                 </div>
             );
         }
@@ -289,17 +291,19 @@ const Analytics = () => {
                         </button>
                     </div>
                     <div className={styleStat.correlation}>
-                        {names(priceTickerForStatistic.name) &&
+                        {ticker1 &&
                             <>
-                                <h3 className={styleStat.stock__name}>{names(priceTickerForStatistic.name)}</h3>
+                                <h3 className={styleStat.stock__name}>{names(ticker1.name)}</h3>
                                 <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
                                 <div className={styleStat.price__now}>
-                                    <span className={styleStat.prise}>{priceTickerForStatistic.price}</span>
+                                    <span className={styleStat.prise}>{ticker1.price}</span>
                                     <span
-                                        className={priceTickerForStatistic.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceTickerForStatistic.change}</span>
+                                        className={ticker1.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{ticker1.change}</span>
                                     <span
-                                        className={priceTickerForStatistic.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceTickerForStatistic.changePersent})%</span>
+                                        className={ticker1.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({ticker1.changePersent})%</span>
                                 </div>
+                                <p>High/low for 52 week</p>
+                                <p className="fw-bold">{ticker1.max} / {ticker1.min}</p>
                             </>
                         }
                         <table className="table table-hover table-light table-statistic">
@@ -385,10 +389,13 @@ const Analytics = () => {
                         </button>
                     </div>
                     <div className={styleStat.correlation}>
+                        {tickers1 &&
                         <div className="tickers">
-                            {priceTickerForStatisticInvestmentPortfolio.map((t, i) =>
-                                <TickerForInvestmentPortfolio key={i} name={t.name} price={t.price} change={t.change} changePersent={t.changePersent}/>)}
+                            {tickers1.map((t, i) =>
+                                <TickerForInvestmentPortfolio key={i} name={t.name} price={t.price} change={t.change}
+                                                              changePersent={t.changePersent}/>)}
                         </div>
+                        }
                         <table className="table table-hover table-light table-statistic">
                             {statisticForInvestmentPortfolio.minStat && statisticForInvestmentPortfolio.maxStat &&
                                 <tbody>
@@ -443,34 +450,37 @@ const Analytics = () => {
                     </div>
                 </div>
                 <div className="page-analytics__sideBar">
+                    {firstTicker1 &&
                     <div className={styleStat.stock__info}>
-                        <h3 className={styleStat.stock__name}>{names(firstTicker)}</h3>
+                        <h3 className={styleStat.stock__name}>{names(firstTicker1.name)}</h3>
                         <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
-                        <div className={styleStat.price__now}>
-                            <span className={styleStat.prise}>{priceFirstTicker.price}</span>
-                            <span
-                                className={priceFirstTicker.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceFirstTicker.change}</span>
-                            <span
-                                className={priceFirstTicker.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceFirstTicker.changePersent})%</span>
-                        </div>
-                        <p>High/low for 52 week</p>
-                        <p className="fw-bold">{minMaxPricesFirstTicker.max} / {minMaxPricesFirstTicker.min}</p>
+                                <div className={styleStat.price__now}>
+                                    <span className={styleStat.prise}>{firstTicker1.price}</span>
+                                    <span
+                                        className={firstTicker1.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{firstTicker1.change}</span>
+                                    <span
+                                        className={firstTicker1.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({firstTicker1.changePersent})%</span>
+                                </div>
+                                <p>High/low for 52 week</p>
+                                <p className="fw-bold">{firstTicker1.max} / {firstTicker1.min}</p>
                     </div>
-
+                    }
+                    {secondTicker1 &&
                     <div className={styleStat.stock__info}>
-                        <h3 className={styleStat.stock__name}>{names(secondTicker)}</h3>
+                        <h3 className={styleStat.stock__name}>{names(secondTicker1.name)}</h3>
                         <p>NasdaqGS - NasdaqGS Real Time Price. Currency in USD</p>
-                        <div className={styleStat.price__now}>
-                            <span className={styleStat.prise}>{priceSecondTicker.price}</span>
-                            <span
-                                className={priceSecondTicker.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{priceSecondTicker.change}</span>
-                            <span
-                                className={priceSecondTicker.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({priceSecondTicker.changePersent})%</span>
+                                <div className={styleStat.price__now}>
+                                    <span className={styleStat.prise}>{secondTicker1.price}</span>
+                                    <span
+                                        className={secondTicker1.change < 0 ? styleStat.chgRed : styleStat.chgGreen}>{secondTicker1.change}</span>
+                                    <span
+                                        className={secondTicker1.changePersent < 0 ? styleStat.chgRed : styleStat.chgGreen}>({secondTicker1.changePersent})%</span>
+                                </div>
 
-                            <p>High/low for 52 week</p>
-                            <p className="fw-bold">{minMaxPricesSecondTicker.max} / {minMaxPricesSecondTicker.min}</p>
+                                <p>High/low for 52 week</p>
+                                <p className="fw-bold">{secondTicker1.max} / {secondTicker1.min}</p>
                         </div>
-                    </div>
+                    }
                 </div>
             </section>
             {/*<section className="analysis">*/}
