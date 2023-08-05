@@ -1,22 +1,50 @@
 .stock__info {
     color: black;
-    padding: 20px 5px;
-    border: 1px solid #b5a8a875;
-    background-color: #f2f2f2;
+    padding: 10px 20px;
+    margin: 10px 10px 10px 20px;
+    /*border: 1px solid #b5a8a875;*/
+    /*background-color: #f2f2f2;*/
     border-radius: 3px;
-    margin-bottom: 30px;
+    text-align: left;
+    background-color: #f8f9fa;
+}
+
+.stock__info__analytic {
+    color: black;
+    padding: 10px 20px;
+    margin: 10px 10px 10px 20px;
+    /*border: 1px solid #b5a8a875;*/
+    /*background-color: #f2f2f2;*/
+    border-radius: 3px;
+    text-align: left;
+}
+
+.stock__info__statistic {
+    color: black;
+    padding: 10px 20px;
+    margin: 10px 10px 10px 20px;
+    /*border: 1px solid #b5a8a875;*/
+    /*background-color: #f2f2f2;*/
+    border-radius: 3px;
     text-align: left;
 }
 
 .stock__info p {
-    font-size: 16px;
+    font-size: 1.1em;
+}
+
+.stock__info__statistic p {
+    font-size: 1.3em;
+}
+
+.stock__info__analytic p {
+    font-size: 1.3em;
 }
 
 .stock__name {
     font-weight: bold;
-    font-size: 1.3em;
+    font-size: 1.7em;
     letter-spacing: 1px;
-    margin-bottom: 15px;
 }
 
 .stock__symbol {
@@ -26,10 +54,15 @@
 
 .price__now span {
     display: inline-block;
-    margin-right: 5px;
+    margin-right: 8px;
 }
 .prise {
-    font-size: 40px;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+.prise__analytic {
+    font-size: 1.5em;
     font-weight: 600;
 }
 

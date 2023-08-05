@@ -3,7 +3,7 @@ import Hero from "./Hero";
 import Services from "./Services";
 import Correlation from "./Correlation";
 import Statistic from "./Statistic";
-import StockApi from "./StockApi";
+import PriceData from "./PriceData";
 
 const Home = () => {
     return (
@@ -12,7 +12,7 @@ const Home = () => {
             <Services/>
             <Correlation/>
             <Statistic/>
-            <StockApi/>
+            <PriceData/>
         </main>
     );
 };

@@ -3,8 +3,8 @@ import '../../CSS/footer.css'
 
 const Footer = () => {
     return (
-        <footer >
-            <div className="footer__container">
+        <footer>
+            <div className="footer__container ">
             <ul className="footer__contact">
                 <li>oll@investing.com</li>
                 <li>+972 53 111111</li>

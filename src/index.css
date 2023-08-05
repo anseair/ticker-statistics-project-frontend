@@ -2,7 +2,8 @@
 
 body {
   margin: 0;
-  max-width: 1920px;
+  /*width: 1200px;*/
   color: white;
   font-family: 'Roboto Condensed', sans-serif;
+  min-width: 100%;
 }

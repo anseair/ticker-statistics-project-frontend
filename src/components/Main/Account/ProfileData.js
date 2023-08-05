@@ -1,59 +1,69 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchTickers} from "../../../actions/tickersAction";
-import {addTicker, deleteTicker} from "../../../slices/tickersSlice";
-import {UpdateUser} from "./UpdateUser";
+import {fetchUpdateUser} from "../../../actions/accoutAction";
 
 const ProfileData = () => {
     const user = useSelector(state => state.user);
-    const {tickers, selectedTickers} = useSelector(state => state.tickers);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const dispatch = useDispatch();
-    const [ticker, setTicker] = useState('');
 
-    useEffect(()=> {
-        dispatch(fetchTickers());
+    useEffect(() => {
+        setFirstName(user.firstName);
+        setLastName(user.lastName);
     }, []);
 
-    const handleChange = (e) => {
-        const ticker = e.target.value;
-        setTicker(ticker);
+    const handleClickSave = () => {
+        dispatch(fetchUpdateUser(firstName, lastName));
     }
 
-    const handleClickAddTicker = () => {
-        if (selectedTickers.findIndex(t => t === ticker) >= 0) {
-            alert(`Ticker already exists`);
-        } else{
-            dispatch(addTicker(ticker));
-        }
+    const handleClickCancel = () => {
+        setFirstName(user.firstName);
+        setLastName(user.lastName);
     }
 
     return (
-        <div>
-            <p>LOGIN: {user.login}</p>
-            <p>FIRST NAME: {user.firstName}</p>
-            <p>LAST NAME: {user.lastName}</p>
-            {/*<p>Email: {user.email}</p>*/}
+        <>
+            {user.message &&
+                <div className="alert alert-info alert-dismissible">
+                    {user.message}
+                </div>
+            }
+
+            <div className="row">
+                <h5>CONTACT INFORMATION</h5>
+                <div className="col-6">
+                    <p>FIRST NAME:</p>
+                    <input type="text" required className="text-start"
+                           onChange={e => setFirstName(e.target.value.trim())} value={firstName}/>
+                </div>
+                <div className="col-sm-6">
+                    <p>LAST NAME:</p>
+                    <input type="text" required className="text-start"
+                           onChange={e => setLastName(e.target.value.trim())} value={lastName}/>
+                </div>
+            </div>
+            <div>
+                <p>Country:</p>
+                <input type="text" required className="text-start"/>
+            </div>
+            <div>
+                <p>Address:</p>
+                <input type="text" required className="text-start"/>
+            </div>
+            <div>
+                <p>Town/City:</p>
+                <input type="text" required className="text-start"/>
+            </div>
+            <div className="d-flex justify-content-end">
+                <button className="button form__button me-1" onClick={handleClickSave}>Save changes
+                </button>
+                <button className="button form__button" onClick={handleClickCancel}>Cancel</button>
+            </div>
             <ul>CURRENT ROLES:
-                {user.roles.map(r => <li key={r}> - {r}</li>)}
+                {user.roles.map(r => <li className="text-muted w-400" key={r}> - {r}</li>)}
             </ul>
-            <UpdateUser/>
-            <p>CHOOSE SYMBOL FOR ADD:</p>
-            <select className="profile__select" onChange={handleChange} value={ticker}>
-                <option value='' disabled hidden>Select ticker</option>
-                {tickers.map((t) => {
-                        return <option key={t} value={t}>{t}</option>
-                    }
-                )}
-            </select>
-            <button className="button form__button m-2" onClick={handleClickAddTicker}>ADD</button>
-            <ul>SYMBOLS:
-                {selectedTickers.map((ticker, i) => {
-                    return <li key={i}> * {ticker}
-                        <button className="button form__button m-1" onClick={() => dispatch(deleteTicker(ticker))}>DELETE</button>
-                    </li>
-                })}
-            </ul>
-        </div>
+        </>
     );
 };
 

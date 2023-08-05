@@ -4,7 +4,11 @@ export const statisticSlice = createSlice({
     name: "statistic",
     initialState: {
         statistic: {},
-        statisticForInvestmentPortfolio: {}
+        statisticForInvestmentPortfolio: {},
+        textStatistic: '',
+        textStatisticForInvestmentPortfolio: '',
+        errorStatistic: '',
+        errorStatisticForInvestmentPortfolio: ''
     },
     reducers: {
         putStatistic(state, action){
@@ -13,8 +17,23 @@ export const statisticSlice = createSlice({
         putStatisticForInvestmentPortfolio(state, action){
             state.statisticForInvestmentPortfolio = action.payload;
         },
+        pendingStatistic(state, action) {
+            state.textStatistic = action.payload;
+        },
+        pendingStatisticForInvestmentPortfolio(state, action) {
+            state.textStatisticForInvestmentPortfolio = action.payload;
+        },
+        errorStatistic(state, action) {
+            state.errorStatistic = action.payload
+        },
+        errorStatisticForInvestmentPortfolio(state, action) {
+            state.errorStatisticForInvestmentPortfolio = action.payload
+        }
     }
 })
-export const {putStatistic, putStatisticForInvestmentPortfolio, errorStatistic} = statisticSlice.actions;
+export const {putStatistic, putStatisticForInvestmentPortfolio,
+    pendingStatistic, pendingStatisticForInvestmentPortfolio,
+    errorStatistic, errorStatisticForInvestmentPortfolio
+} = statisticSlice.actions;
 
 export default statisticSlice.reducer;

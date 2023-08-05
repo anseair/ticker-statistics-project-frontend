@@ -12,13 +12,15 @@ import Profile from "../Main/Account/Profile";
 import {fetchUser} from "../../actions/accoutAction";
 
 const Navigation = () => {
-    const {login} = useSelector(state => state.user);
+    const {user} = useSelector(state => state.user);
     const token = useSelector(state => state.token);
     const dispatch = useDispatch();
 
     const handleClickLogout = () => {
         dispatch(deleteToken());
         dispatch(deleteUser());
+        localStorage.clear();
+        sessionStorage.clear();
     }
 
     return (
@@ -37,7 +39,7 @@ const Navigation = () => {
                 <div className="dropdown">
                     {token &&
                         <Link className="link button form__button" to={"profile"}>
-                            {token ? `${login}` : 'Sing In'}
+                            {token ? `${user.login}` : 'Sing In'}
                             <div className="dropdown-content">
                                 <Link to={"guest"} onClick={handleClickLogout}>LOG OUT</Link>
                             </div>

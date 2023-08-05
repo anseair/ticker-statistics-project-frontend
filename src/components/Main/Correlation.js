@@ -1,5 +1,5 @@
 import React from 'react';
-import CorrelationBox from "./CorrelationBox";
+import correlation from "../../Videos/correlation.mp4";
 
 const Correlation = () => {
     return (
@@ -11,7 +11,9 @@ const Correlation = () => {
                     easy-to-use
                     calculator. Make informed investment decisions based on the data-driven analysis of stock market
                     trends</p>
-                <CorrelationBox/>
+                <video width="1000" height="500" controls muted  autoPlay loop>
+                    <source src={correlation} type="video/mp4"/>
+                </video>
             </div>
         </section>
     );

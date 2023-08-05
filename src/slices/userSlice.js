@@ -8,12 +8,15 @@ const userSlice = createSlice({
     reducers: {
         putUser: (state, action) => action.payload,
         deleteUser: (state) => {},
-        errorUser: (state, action) => {
+        putMessage: (state, action) => {
             state.message = action.payload
+        },
+        closeMessage: (state, action) => {
+            state.message = ''
         }
     }
 })
 
-export const {putUser, deleteUser, errorUser} = userSlice.actions;
+export const {putUser, deleteUser, putMessage, closeMessage} = userSlice.actions;
 export default userSlice.reducer;
 

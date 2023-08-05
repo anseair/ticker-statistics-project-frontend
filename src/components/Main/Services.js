@@ -10,7 +10,7 @@ const Services = () => {
                     <div className={style.service__num}>01</div>
                     <div className={style.service__content} >
                         <h4 className={style.services__subtitle}>Exploring Securities Trends</h4>
-                        <h3 className={style.services__title}>Statistics</h3>
+                        <h3 className={style.services__title}>Correlation</h3>
                     </div>
                     </a>
                 </li>
@@ -27,8 +27,8 @@ const Services = () => {
                     <a data-scroll href="#stockApi">
                     <div className={style.service__num}>03</div>
                     <div className={style.service__content}>
-                        <h4 className={style.services__subtitle}>Real-Time Data & Analysis</h4>
-                        <h3 className={style.services__title}>Stock API</h3>
+                        <h4 className={style.services__subtitle}>Latest Stock Market Information</h4>
+                        <h3 className={style.services__title}>Price Data</h3>
                     </div>
                     </a>
                 </li>

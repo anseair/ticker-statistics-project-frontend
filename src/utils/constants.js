@@ -8,9 +8,16 @@ export const navItems = [
     {title: "Analytics", route: "analytics"},
     {title: "Contacts", route: "contacts"},
 ];
+
+export const navItemsAccount = [
+    {title: "Account", route: "../profile"},
+    {title: "Change password", route: "changePassword"},
+    {title: "Delete account", route: "delete"}
+];
 export const account = [
     {title: "Guest", route: "guest"},
-    {title: "Profile", route: "profile"}
+    {title: "Profile", route: "profile"},
+    {title: "Forgot password", route: "forgotPassword"}
 ];
 
 export const contactsImages = [email, support, address];
@@ -34,19 +41,19 @@ export const randomNum = (tickers) => {
 export const names = (ticker) => {
     switch (ticker){
         case "AAPL":
-            return ('Apple Inc. (AAPL)')
+            return ('Apple Inc. (AAPL) ')
         case "AMZN":
-            return 'Amazon.com, Inc. (AMZN)';
+            return 'Amazon.com, Inc. (AMZN) ';
         case "GOOG":
-            return 'Alphabet Inc. (GOOG)';
+            return 'Alphabet Inc. (GOOG) ';
         case "INTC":
-            return 'Intel Corporation (INTC)';
+            return 'Intel Corporation (INTC) ';
         case "MSFT":
-            return 'Microsoft Corporation (MSFT)';
+            return 'Microsoft Corporation (MSFT) ';
         case "TSLA":
-            return 'Tesla, Inc. (TSLA)';
+            return 'Tesla, Inc. (TSLA) ';
         case "^GSPC":
-            return 'S&P 500 (^GSPC)';
+            return 'S&P 500 (^GSPC) ';
         default:
             return ""
     }

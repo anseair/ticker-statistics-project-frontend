@@ -10,6 +10,7 @@
     justify-content: center;
     align-items: center;
     padding: 0 10px;
+    /*margin-right: 10px;*/
 }
 
 .correlationPage__form .input__container:not(:last-child){
@@ -17,7 +18,7 @@
 }
 .correlationPage__form .input__container{
     padding: 10px 5px;
-    margin: 10px 0px;
+    margin: 10px 10px;
 }
 
 .correlationPage__form input[type="date"] {
@@ -50,8 +51,8 @@
 
 .chart {
     margin: 10px 0;
-    height: 320px;
-    width: 900px;
+    height: 400px;
+    width: 1000px;
 }
 
 
@@ -102,9 +103,13 @@ input::placeholder {
 }
 
 .tickers {
+    color: black;
+    /*padding: 10px 20px;*/
+    /*margin: 10px 0 10px 20px;*/
+    /*border-radius: 3px;*/
+    text-align: left;
     display: flex;
-    justify-content: center;
-    align-items: center;
+
 }
 
 

@@ -1,0 +1,32 @@
+/*priceData*/
+.priceData {
+    max-width: 1200px;
+    margin: 100px auto;
+    color: black;
+    display: flex;
+    align-items: center;
+}
+
+.priceData__content {
+    text-align: right;
+    padding-left: 30px;
+}
+
+.priceData__relative {
+    position: relative;
+}
+
+.priceData__title {
+    font-family: 'Merriweather', serif;
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+
+.priceData__subtitle {
+    font-family: 'Roboto Condensed', sans-serif;
+    text-align: right;
+    color: #3e4953;
+    font-size: 17px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+}

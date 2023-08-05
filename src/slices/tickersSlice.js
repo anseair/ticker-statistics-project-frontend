@@ -4,14 +4,14 @@ const tickersSlice = createSlice({
     name: 'ticker',
     initialState: {
         tickers: [],
-        selectedTickers: []
+        description: []
     },
     reducers: {
         putTickers(state, action) {
             state.tickers = action.payload
         },
-        addTicker(state, action) {
-            state.selectedTickers.push(action.payload);
+        putDescription(state, action) {
+            state.description = action.payload
         },
         deleteTicker: (state, action) => {
             let deletedId = action.payload;
@@ -21,5 +21,5 @@ const tickersSlice = createSlice({
         }
     }
 })
-export  const {putTickers, addTicker, deleteTicker} = tickersSlice.actions;
+export  const {putTickers, deleteTicker, putDescription} = tickersSlice.actions;
 export default tickersSlice.reducer;
